@@ -1,0 +1,105 @@
+{
+    "noRecords": "There are no records yet",
+    "isEmpty": "Start adding comics to the collection!",
+    "isEmptyFilter": "There are no records matching your filtering",
+    "menu": {
+        "groupTitle": "Collection listing",
+        "groupYear": "Grouped by year",
+        "groupSeries": "Grouped by serie",
+        "dataTitle": "Data management",
+        "dataImport": "Import data",
+        "dataExport": "Export data",
+        "about": "About"
+    },
+    "add": {
+        "title": "Add a Comic",
+        "save": "Save",
+        "form": {
+            "title": "Title",
+            "volumen": "Volumen",
+            "price": "Price",
+            "variant": "Variant",
+            "check": "Is this in your shelf?",
+            "date": "Publish date"
+        },
+        "dialog": {
+            "success": "Comic is saved",
+            "header": "You already have this comic!",
+            "variant": "Variant",
+            "dateRegistered": "Date registered",
+            "message": "Be careful about purchasing this comic as it may be part of your collection already"
+        }
+    },
+    "dates": {
+        "title": "Comics Collection",
+        "filters": {
+            "title": "Filter records",
+            "all": "All",
+            "owned": "Owned",
+            "notOwned": "Not owned"
+        }
+    },
+    "series": {
+        "filterPlaceholder": "Filter serie title"
+    },
+    "import": {
+        "title": "Import a collection data file",
+        "subtitle": "Choose an import mode option",
+        "options": {
+            "0": "Only add those that are not already in",
+            "1": "Import records replacing duplicates",
+            "2": "Clean current records and import"
+        },
+        "btns": {
+            "choose0": "Choose a backup file",
+            "choose1": "Choose another backup file",
+            "import": "Import data",
+            "clean": "Clean all the database"
+        },
+        "dialog": {
+            "header": "Are you sure?",
+            "subHeader": "This action cannot be undone",
+            "btns": [
+                "Clear database",
+                "Cancel"
+            ],
+            "cleared": "The database has been cleared",
+            "fileError": "Error: File is not supported",
+            "newComics": "new comics",
+            "errorMsg": "Error: Something is wrong"
+        }
+    },
+    "export": {
+        "title": "Export your collection data",
+        "subtitle": "Your data is stored and exists ONLY ON THIS DEVICE and it's not shared with any other entity, so it's important to generate a backup file from time to time. This backup file could be imported at any time into this or other device.",
+        "btns": {
+            "choose0": "Choose file destination",
+            "choose1": "Change file destination",
+            "export": "Save data backup"
+        },
+        "successMsg": "Backup file have been created",
+        "errorMsg": "Error: the backup was not created"
+    },
+    "about": {
+        "title": "About ContaComics",
+        "createdBy": "Created by",
+        "terms": "Terms and Conditions"
+    },
+    "details": {
+        "variant": "Variant",
+        "price": "Price",
+        "publishedDate": "Published date",
+        "registryDate": "Registry date",
+        "owned": "In your shelf since",
+        "notOwned": "Not owned... yet",
+        "delete": "Delete this record",
+        "dialog": {
+            "header": "Are you sure?",
+            "subHeader": "This action cannot be undone",
+            "btns": [
+                "Delete this record",
+                "Cancel"
+            ]
+        }
+    }
+}

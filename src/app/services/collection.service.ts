@@ -4,8 +4,8 @@ import * as Rx from "rxjs";
 
 import { DbHandlingService } from "./db-handling.service";
 
-import { ICCYear, CCRecord, ICCRecord, ICCSerie } from "src/models";
-import { IDeleteRecordResponse, IInsertRecordResponse } from "src/dbHandlers/dbHandler";
+import { ICCYear, CCRecord, ICCRecord, ICCSerie } from "../../../src/models";
+import { IDeleteRecordResponse, IInsertRecordResponse } from "../../../src/dbHandlers/dbHandler";
 @Injectable({
     providedIn: "root"
 })

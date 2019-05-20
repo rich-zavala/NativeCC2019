@@ -1,0 +1,105 @@
+{
+    "noRecords": "Aún no hay registros",
+    "isEmpty": "¡Comienza agregando comics a tu colección!",
+    "isEmptyFilter": "No hay registros compatibles",
+    "menu": {
+        "groupTitle": "Gestión de colección",
+        "groupYear": "Agrupado por año",
+        "groupSeries": "Agrupado por serie",
+        "dataTitle": "Gestión de datos",
+        "dataImport": "Restaurar colección",
+        "dataExport": "Exportar colección",
+        "about": "Acerca de"
+    },
+    "add": {
+        "title": "Agrega un Comic",
+        "save": "Guardar",
+        "form": {
+            "title": "Título",
+            "volumen": "Volumen",
+            "price": "Precio",
+            "variant": "Variante",
+            "check": "¿Ya lo tienes?",
+            "date": "Fecha de publicación"
+        },
+        "dialog": {
+            "success": "El Comic se ha guardado",
+            "header": "¡Este comic ya está registrado!",
+            "variant": "Variante",
+            "dateRegistered": "Fecha de registro",
+            "message": "Ten cuidado al adquirir este volumen pues es posible que ya lo tengas"
+        }
+    },
+    "dates": {
+        "title": "Colección de Comics",
+        "filters": {
+            "title": "Filtro de registros",
+            "all": "Todos",
+            "owned": "Adquiridos",
+            "notOwned": "Sin adquirir"
+        }
+    },
+    "series": {
+        "filterPlaceholder": "Filtra por título de serie"
+    },
+    "import": {
+        "title": "Restaura una colección de respaldo",
+        "subtitle": "Elige cómo quieres restaurar tu información",
+        "options": {
+            "0": "Agregar sólo aquellos no registrados",
+            "1": "Reemplazar registros duplicados",
+            "2": "Borrar la base de datos y restaurar"
+        },
+        "btns": {
+            "choose0": "Elige un archivo de respaldo",
+            "choose1": "Elige otro archivo de respaldo¡",
+            "import": "Restaurar colección",
+            "clean": "Borrar la base de datos completamente"
+        },
+        "dialog": {
+            "header": "¿Estás seguro?",
+            "subHeader": "Esta acción no se puede deshacer",
+            "btns": [
+                "Borrar base de datos",
+                "Cancelar"
+            ],
+            "cleared": "La base de datos ha sido eliminada",
+            "fileError": "Error: Archivo no soportadpo",
+            "newComics": "nuevos comics",
+            "errorMsg": "Error: Algo ha salido mal"
+        }
+    },
+    "export": {
+        "title": "Exportar colección",
+        "subtitle": "La información de tu colección EXISTE ÚNICAMENTE EN ESTE DISPOSITIVO y no es compartida con ninguna otra entidad, por lo que es importante generar constantemente un archivo de reespaldo el cual puede ser importado en cualquier momento en este u otro dispositivo.",
+        "btns": {
+            "choose0": "Elige la carpeta de destino",
+            "choose1": "Cambia la carpeta de destino",
+            "export": "Guardar archivo de respaldo"
+        },
+        "successMsg": "El archivo de respaldo ha sido creado",
+        "errorMsg": "Error: algo salió mal"
+    },
+    "about": {
+        "title": "Acerca de ContaComics",
+        "createdBy": "Creado por",
+        "terms": "Términos y Condiciones"
+    },
+    "details": {
+        "variant": "Variante",
+        "price": "Precio",
+        "publishedDate": "Fecha de publicación",
+        "registryDate": "Fecha de registro",
+        "owned": "Adquirido en",
+        "notOwned": "No adquirido... aún",
+        "delete": "Eliminar este registro",
+        "dialog": {
+            "header": "¿Estás seguro?",
+            "subHeader": "Esta acción no se puede deshacer",
+            "btns": [
+                "Eliminar este registro",
+                "Cancelar"
+            ]
+        }
+    }
+}

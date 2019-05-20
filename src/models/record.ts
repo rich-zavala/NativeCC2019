@@ -1,6 +1,6 @@
 import * as moment from "moment";
-import { DATE_FORMAT_READ, DATE_FORMAT_READ_TIME } from "src/constants/formats";
-import { dynCurrency } from "src/app/tools/utils";
+import { DATE_FORMAT_READ, DATE_FORMAT_READ_TIME } from "../../src/constants/formats";
+import { dynCurrency } from "../../src/app/tools/utils";
 
 export interface ICCRecord {
     id?: string;

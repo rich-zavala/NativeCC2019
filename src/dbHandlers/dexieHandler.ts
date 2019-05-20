@@ -1,5 +1,5 @@
 import { ICCDBHandler, IInsertRecordResponse, IDeleteRecordResponse } from "./dbHandler";
-import { ICCRecord, CCRecord, ICCDay, ICCYear, ICCSerie } from "src/models";
+import { ICCRecord, CCRecord, ICCDay, ICCYear, ICCSerie } from "../../src/models";
 
 import * as Rx from "rxjs";
 import { finalize, toArray } from "rxjs/operators";

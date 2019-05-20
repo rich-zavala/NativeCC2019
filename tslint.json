@@ -54,6 +54,10 @@
       "check-separator",
       "check-type",
       "check-preblock"
-    ]
+    ],
+    "max-line-length": [
+      true,
+      140
+    ],
   }
 }
