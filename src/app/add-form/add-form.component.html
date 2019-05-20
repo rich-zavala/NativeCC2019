@@ -14,18 +14,68 @@
     <Label class="action-bar-title" text="Add a Comic Aime te amo"></Label>
 </ActionBar>
 
-<StackLayout class="form" sdkExampleTitle sdkToggleNavButton>
-    <!-- >> textfield-binding-html -->
-    <StackLayout class="input-field">
-        <Label class="label" text="Keyboard types" row="8" col="0" textWrap="true"></Label>
-        <TextField hint="Enter text" autocorrect="false" class="input"></TextField>
-        <!-- <Label class="h3 text-center" [text]="'The first input is: ' + firstTx" textWrap="true" marginBottom="25"></Label> -->
-    </StackLayout>
+<StackLayout class="form">
+    <form [formGroup]="ccRecordForm" class="form">
+        <StackLayout class="input-field">
+            <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.title' | translate }}"></Label>
+            <TextField autocorrect="false" class="input" #title formControlName="title" returnKeyType="next"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
 
-    <StackLayout class="input-field">
-        <TextField #secondTx hint="Enter some text and click the button" autocorrect="false" returnKeyType="done" (returnPress)="submit(secondTx.text)" class="input input-border"></TextField>
-    </StackLayout>
+        <!-- <div class="autocompleteOptions" *ngIf="showAutocomplete && !lockAutocompleteHidden">
+            <div class="close-container">
+                <ion-button class="close" color="light" fill="clear" size="small" (click)="hideAutocompleteLock()" no-margin>
+                    <ion-icon name="close-circle"></ion-icon>
+                </ion-button>
+            </div>
+            <div class="titles-container">
+                <div class="titles-scroll">
+                    <ion-button *ngFor="let title of filteredTitles" expand="full" color="tertiary" (click)="selectTitle(title)">{{title}}</ion-button>
+                </div>
+            </div>
+        </div> -->
 
-    <Button text="Get the second input" (tap)="showAlert(secondTx.text)" class="btn btn-primary btn-active"></Button>
-    <!-- << textfield-binding-html -->
+        <GridLayout rows="auto, auto" columns="*,*">
+            <StackLayout class="input-field" row="0" col="0">
+                <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.volumen' | translate }}"></Label>
+                <TextField autocorrect="false" class="input" #volumen type="number" returnKeyType="next" formControlName="volumen"></TextField>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+
+            <StackLayout class="input-field" row="0" col="1">
+                <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.price' | translate }}"></Label>
+                <TextField autocorrect="false" class="input" type="number" returnKeyType="next" formControlName="price"></TextField>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+
+            <!-- <StackLayout class="input-field" row="1" col="1">
+                <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
+                <TextField autocorrect="false" class="input" type="date" returnKeyType="next" formControlName="publishDate"></TextField>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+            <StackLayout class="input-field"></StackLayout> -->
+        </GridLayout>
+
+        <StackLayout class="input-field">
+            <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.variant' | translate }}"></Label>
+            <TextField autocorrect="false" class="input" returnKeyType="next" formControlName="variant"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+
+        <GridLayout rows="auto, auto" columns="*,*" width="220" horizontalAlignment="left">
+            <StackLayout class="input-field" row="0" col="0">
+                <Label class="label font-weight-bold m-t-10" text="{{ 'add.form.check' | translate }}"></Label>
+            </StackLayout>
+            <Switch checked="true" class="switch m-0" row="0" col="1" horizontalAlignment="left"></Switch>
+        </GridLayout>
+
+        <StackLayout class="input-field">
+            <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
+            <DatePicker></DatePicker>
+        </StackLayout>
+
+        <Button text="Save this record" class="btn btn-primary"></Button>
+    </form>
+
+
 </StackLayout>

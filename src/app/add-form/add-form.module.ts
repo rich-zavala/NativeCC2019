@@ -1,23 +1,23 @@
-import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
-
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
 import { AddFormRoutingModule } from "./add-form-routing.module";
 import { AddFormComponent } from "./add-form.component";
+
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
     imports: [
         NativeScriptCommonModule,
         AddFormRoutingModule,
-        FormsModule,
-        ReactiveFormsModule
+        NativeScriptFormsModule,
+        ReactiveFormsModule,
+        TranslateModule
     ],
     declarations: [
         AddFormComponent
-    ],
-    schemas: [
-        NO_ERRORS_SCHEMA
     ]
 })
 export class AddFormModule { }
