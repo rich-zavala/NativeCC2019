@@ -1,0 +1,23 @@
+<ActionBar title="Comics Collection" class="action-bar">
+    <ActionItem text="All" android.position="popup">
+    </ActionItem>
+    <ActionItem text="Owned" android.position="popup">
+    </ActionItem>
+    <ActionItem text="Not owned" android.position="popup">
+    </ActionItem>
+    <NavigationButton android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+</ActionBar>
+<TabView id="tabViewContainer">
+    <ng-container *ngFor="let year of ['2019', '2018', '2017', '2016', '2015', '2014', '2013']">
+        <StackLayout *tabItem="{title: year}">
+            <StackLayout>
+                <Label text="First Tab" textWrap="true" class="m-15 h2 text-left" color="blue"></Label>
+            </StackLayout>
+        </StackLayout>
+    </ng-container>
+</TabView>
+
+<GridLayout class="page page-content">
+    <Label class="page-icon fa" text="&#xf015;"></Label>
+    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+</GridLayout>
