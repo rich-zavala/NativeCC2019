@@ -7,6 +7,7 @@ import { AddFormRoutingModule } from "./add-form-routing.module";
 import { AddFormComponent } from "./add-form.component";
 
 import { TranslateModule } from "@ngx-translate/core";
+import { NativeScriptDateTimePickerModule, } from "nativescript-datetimepicker/angular";
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { TranslateModule } from "@ngx-translate/core";
         AddFormRoutingModule,
         NativeScriptFormsModule,
         ReactiveFormsModule,
-        TranslateModule
+        TranslateModule,
+        NativeScriptDateTimePickerModule
     ],
     declarations: [
         AddFormComponent

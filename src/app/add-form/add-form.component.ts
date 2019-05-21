@@ -32,6 +32,7 @@ export class AddFormComponent implements OnInit {
 
     private backSubs: Rx.Subscription;
 
+    private checkedText = "No";
     private strs;
 
     constructor(
@@ -54,8 +55,6 @@ export class AddFormComponent implements OnInit {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
     }
-
-
 
     private updateTitles() {
         return this.db.getSeries().subscribe(titles => this.titles = titles.map(t => t.name));
@@ -86,6 +85,9 @@ export class AddFormComponent implements OnInit {
                     }
                 }
             );
+
+
+        return this.ccRecordForm.controls.checked.valueChanges.subscribe(value => this.checkedText = value ? "Yes" : "No");
     }
 
     updateTitle() {
@@ -118,6 +120,8 @@ export class AddFormComponent implements OnInit {
                 this.ccRecordForm.value[i] = this.ccRecordForm.value[i].trim();
             }
         }
+
+        console.log("Save", this.ccRecordForm.value);
 
         this.db.insert(this.ccRecordForm.value)
             .subscribe(

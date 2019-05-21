@@ -11,7 +11,7 @@
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" text="Add a Comic Aime te amo"></Label>
+    <Label class="action-bar-title" text="{{ 'add.title' | translate }}"></Label>
 </ActionBar>
 
 <StackLayout class="form">
@@ -38,43 +38,38 @@
         <GridLayout rows="auto, auto" columns="*,*">
             <StackLayout class="input-field" row="0" col="0">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.volumen' | translate }}"></Label>
-                <TextField autocorrect="false" class="input" #volumen type="number" returnKeyType="next" formControlName="volumen"></TextField>
+                <TextField autocorrect="false" class="input" #volumen type="number" keyboardType="number" returnKeyType="next" formControlName="volumen"></TextField>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
             <StackLayout class="input-field" row="0" col="1">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.price' | translate }}"></Label>
-                <TextField autocorrect="false" class="input" type="number" returnKeyType="next" formControlName="price"></TextField>
+                <TextField autocorrect="false" class="input" type="number" keyboardType="number" returnKeyType="next" formControlName="price"></TextField>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <!-- <StackLayout class="input-field" row="1" col="1">
+            <StackLayout class="input-field" row="1" col="0">
+                <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.variant' | translate }}"></Label>
+                <TextField autocorrect="false" class="input" returnKeyType="next" formControlName="variant"></TextField>
+                <StackLayout class="hr-light"></StackLayout>
+            </StackLayout>
+
+            <StackLayout class="input-field" row="1" col="1">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
-                <TextField autocorrect="false" class="input" type="date" returnKeyType="next" formControlName="publishDate"></TextField>
+                <DatePickerField class="input"></DatePickerField>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
-            <StackLayout class="input-field"></StackLayout> -->
         </GridLayout>
 
-        <StackLayout class="input-field">
-            <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.variant' | translate }}"></Label>
-            <TextField autocorrect="false" class="input" returnKeyType="next" formControlName="variant"></TextField>
-            <StackLayout class="hr-light"></StackLayout>
+        <StackLayout class="input-field" horizontalAlignment="center" width="50%">
+            <Label class="label font-weight-bold m-t-10" horizontalAlignment="center" text="{{ 'add.form.check' | translate }}"></Label>
+            <GridLayout rows="auto, auto" columns="*,*">
+                <Switch formControlName="checked" class="switch m-0" row="0" col="0"></Switch>
+                <Label class="h3 p-15" [text]="checkedText" row="0" col="1" textWrap="true"></Label>
+            </GridLayout>
         </StackLayout>
 
-        <GridLayout rows="auto, auto" columns="*,*" width="220" horizontalAlignment="left">
-            <StackLayout class="input-field" row="0" col="0">
-                <Label class="label font-weight-bold m-t-10" text="{{ 'add.form.check' | translate }}"></Label>
-            </StackLayout>
-            <Switch checked="true" class="switch m-0" row="0" col="1" horizontalAlignment="left"></Switch>
-        </GridLayout>
-
-        <StackLayout class="input-field">
-            <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
-            <DatePicker></DatePicker>
-        </StackLayout>
-
-        <Button text="Save this record" class="btn btn-primary"></Button>
+        <Button text="Save this record" class="btn btn-primary" (tap)="save()"></Button>
     </form>
 
 
