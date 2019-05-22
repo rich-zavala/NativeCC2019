@@ -56,7 +56,7 @@
 
             <StackLayout class="input-field" row="1" col="1">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
-                <DatePickerField class="input"></DatePickerField>
+                <DatePickerField class="input" formControlName="publishDate" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection"></DatePickerField>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
         </GridLayout>

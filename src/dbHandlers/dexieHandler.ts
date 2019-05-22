@@ -125,7 +125,6 @@ export class DexieHandler implements ICCDBHandler {
                     };
                 }
 
-                // dayData.records = lodash.orderBy(dayData.records.map(r => r.insertable()), ["recordDate"]).reverse();
                 Rx.from(this.dbDays.put(dayData)).subscribe(() => {
                     observer.next(dayData);
                     observer.complete();
@@ -317,20 +316,4 @@ export class DexieHandler implements ICCDBHandler {
                 );
         });
     }
-
-    // countRecords(): Rx.Observable<number> {
-    //     return Rx.from(this.dbRecords.count());
-    // }
-
-    // countYears(): Rx.Observable<number> {
-    //     return Rx.from(this.dbYears.count());
-    // }
-
-    // countDays(): Rx.Observable<number> {
-    //     return Rx.from(this.dbDays.count());
-    // }
-
-    // countSeries(): Rx.Observable<number> {
-    //     return Rx.from(this.dbSeries.count());
-    // }
 }

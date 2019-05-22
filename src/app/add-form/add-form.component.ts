@@ -13,6 +13,7 @@ import { TranslateService } from "@ngx-translate/core";
 
 import * as Rx from "rxjs";
 import * as moment from "moment";
+import * as lodash from "lodash";
 
 @Component({
     selector: "AddForm",
@@ -23,9 +24,16 @@ export class AddFormComponent implements OnInit {
     // @ViewChild("title") titleField: any;
     // @ViewChild("volumen") volumenField: any;
 
-    ccRecordForm: FormGroup;
-    titles: string[] = [];
+    ccRecordForm: FormGroup = new FormGroup({
+        title: new FormControl("", Validators.required),
+        volumen: new FormControl("", Validators.required),
+        price: new FormControl("", Validators.required),
+        variant: new FormControl(""),
+        checked: new FormControl(false),
+        publishDate: new FormControl("", Validators.required)
+    });
 
+    titles: string[] = [];
     filteredTitles: string[] = [];
     showAutocomplete = false;
     lockAutocompleteHidden = false;
@@ -57,18 +65,16 @@ export class AddFormComponent implements OnInit {
     }
 
     private updateTitles() {
-        return this.db.getSeries().subscribe(titles => this.titles = titles.map(t => t.name));
+        return this.db.getSeries().subscribe(titles => {
+            console.log("updateTitles", titles);
+            this.titles = titles.map(t => t.name);
+        });
     }
 
     private initForm() {
-        this.ccRecordForm = new FormGroup({
-            title: new FormControl("", Validators.required),
-            volumen: new FormControl("", Validators.required),
-            price: new FormControl("", Validators.required),
-            variant: new FormControl(""),
-            checked: new FormControl(false),
-            publishDate: new FormControl(moment().format(DATE_FORMAT), Validators.required)
-        });
+        this.ccRecordForm.reset();
+        this.ccRecordForm.controls.publishDate.setValue(moment().format(DATE_FORMAT));
+
 
         this.ccRecordForm.controls.title.valueChanges
             .subscribe(
@@ -121,7 +127,8 @@ export class AddFormComponent implements OnInit {
             }
         }
 
-        console.log("Save", this.ccRecordForm.value);
+        const ccValue = lodash.cloneDeep(this.ccRecordForm.value);
+        ccValue.publishDate = moment(ccValue.publishDate).format(DATE_FORMAT);
 
         this.db.insert(this.ccRecordForm.value)
             .subscribe(

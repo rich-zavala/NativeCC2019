@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ICCDBHandler } from "../../../src/dbHandlers/dbHandler";
-import { DexieHandler } from "../../../src/dbHandlers/dexieHandler";
+import { SQLiteHandler } from "../../../src/dbHandlers/sqlite";
 
 @Injectable({
   providedIn: "root"
 })
 export class DbHandlingService {
-  db: ICCDBHandler = new DexieHandler();
+  db: ICCDBHandler = new SQLiteHandler();
 }
