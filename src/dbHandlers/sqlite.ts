@@ -1,3 +1,4 @@
+// tslint:disable: max-line-length
 import { ICCDBHandler, IInsertRecordResponse, IDeleteRecordResponse } from "./dbHandler";
 import { ICCRecord, CCRecord, ICCDay, ICCYear, ICCSerie } from "../../src/models";
 

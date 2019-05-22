@@ -1,26 +1,47 @@
 {
-  "extends": "tslint:latest",
+  "extends": "tslint:recommended",
   "linterOptions": {
     "exclude": [
       "app/*.d.ts"
     ]
   },
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "codelyzer"
   ],
   "rules": {
     "array-type": false,
-    "arrow-return-shorthand": true,
     "arrow-parens": false,
     "component-class-suffix": true,
     "deprecation": true,
     "directive-class-suffix": true,
-    "member-access": [true, "no-public"],
-    "newline-before-return": true,
+    "max-line-length": [
+      true,
+      140
+    ],
+    "member-access": false,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
+    ],
     "no-angle-bracket-type-assertion": false,
     "no-attribute-parameter-decorator": true,
-    "no-consecutive-blank-lines": [true, 1],
-    "no-console": [false],
+    "no-consecutive-blank-lines": false,
+    "no-console": [
+      true,
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
+    "no-empty": false,
     "no-forward-ref": true,
     "no-implicit-dependencies": false,
     "no-input-rename": true,
@@ -30,22 +51,23 @@
     "no-submodule-imports": false,
     "no-trailing-whitespace": [true, "ignore-blank-lines"],
     "no-unnecessary-initializer": true,
+    "no-use-before-declare": true,
     "no-var-requires": false,
     "object-literal-key-quotes": [true, "as-needed"],
     "object-literal-sort-keys": false,
-    "one-variable-per-declaration": [true, "ignore-for-loop"],
+    "one-variable-per-declaration": false,
     "ordered-imports": false,
     "prefer-conditional-expression": false,
+    "quotemark": [
+      true,
+      "double"
+    ],
     "use-host-property-decorator": true,
     "use-input-property-decorator": true,
     "use-life-cycle-interface": true,
     "use-output-property-decorator": true,
     "use-pipe-transform-interface": true,
-    "trailing-comma": [true, {
-      "multiline": "never",
-      "singleline": "never"
-    }],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "trailing-comma": false,
     "whitespace": [true,
       "check-branch",
       "check-decl",
@@ -54,10 +76,6 @@
       "check-separator",
       "check-type",
       "check-preblock"
-    ],
-    "max-line-length": [
-      true,
-      140
-    ],
+    ]
   }
 }

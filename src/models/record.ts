@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { DATE_FORMAT_READ, DATE_FORMAT_READ_TIME } from "../../src/constants/formats";
+import { DATE_FORMAT, DATE_FORMAT_READ, DATE_FORMAT_READ_TIME } from "../../src/constants/formats";
 import { dynCurrency } from "../../src/app/tools/utils";
 
 export interface ICCRecord {
@@ -33,7 +33,7 @@ export class CCRecord implements ICCRecord {
         this.price = data.price;
         this.variant = data.variant;
         this.checked = data.checked || false;
-        this.publishDate = data.publishDate;
+        this.publishDate = moment(data.publishDate).format(DATE_FORMAT);
         this.checkedDate = data.checkedDate;
         this.recordDate = data.recordDate || Date.now();
 

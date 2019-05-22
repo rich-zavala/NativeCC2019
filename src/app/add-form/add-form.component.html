@@ -18,59 +18,55 @@
     <form [formGroup]="ccRecordForm" class="form">
         <StackLayout class="input-field">
             <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.title' | translate }}"></Label>
-            <TextField autocorrect="false" class="input" #title formControlName="title" returnKeyType="next"></TextField>
-            <StackLayout class="hr-light"></StackLayout>
+            <RadAutoCompleteTextView #autocomplete id="autocomplete" class="input" [items]="titles" layoutMode="Wrap" suggestMode="Suggest" displayMode="Plain" noResultsText="Nothing found!"
+                showCloseButton="false" (loaded)="onAutoCompleteLoad($event)" (textChanged)="onTitleTextChanged($event)">
+                <SuggestionView tkAutoCompleteSuggestionView suggestionViewHeight="150">
+                    <ng-template tkSuggestionItemTemplate let-item="item">
+                        <StackLayout orientation="vertical" padding="5">
+                            <Label [text]="item.text"></Label>
+                        </StackLayout>
+                    </ng-template>
+                </SuggestionView>
+            </RadAutoCompleteTextView>
+            <Label class="divider" [ngClass]="{ invalidField : ccRecordForm.controls.title.invalid }"></Label>
         </StackLayout>
-
-        <!-- <div class="autocompleteOptions" *ngIf="showAutocomplete && !lockAutocompleteHidden">
-            <div class="close-container">
-                <ion-button class="close" color="light" fill="clear" size="small" (click)="hideAutocompleteLock()" no-margin>
-                    <ion-icon name="close-circle"></ion-icon>
-                </ion-button>
-            </div>
-            <div class="titles-container">
-                <div class="titles-scroll">
-                    <ion-button *ngFor="let title of filteredTitles" expand="full" color="tertiary" (click)="selectTitle(title)">{{title}}</ion-button>
-                </div>
-            </div>
-        </div> -->
 
         <GridLayout rows="auto, auto" columns="*,*">
             <StackLayout class="input-field" row="0" col="0">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.volumen' | translate }}"></Label>
-                <TextField autocorrect="false" class="input" #volumen type="number" keyboardType="number" returnKeyType="next" formControlName="volumen"></TextField>
-                <StackLayout class="hr-light"></StackLayout>
+                <TextField autocorrect="false" class="input" type="number" keyboardType="number" returnKeyType="next" formControlName="volumen"></TextField>
+                <Label class="divider" [ngClass]="{ invalidField : fieldInvalid('volumen') }"></Label>
             </StackLayout>
 
             <StackLayout class="input-field" row="0" col="1">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.price' | translate }}"></Label>
                 <TextField autocorrect="false" class="input" type="number" keyboardType="number" returnKeyType="next" formControlName="price"></TextField>
-                <StackLayout class="hr-light"></StackLayout>
+                <Label class="divider" [ngClass]="{ invalidField : fieldInvalid('price') }"></Label>
             </StackLayout>
 
             <StackLayout class="input-field" row="1" col="0">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.variant' | translate }}"></Label>
                 <TextField autocorrect="false" class="input" returnKeyType="next" formControlName="variant"></TextField>
-                <StackLayout class="hr-light"></StackLayout>
+                <Label class="divider" [ngClass]="{ invalidField : fieldInvalid('variant') }"></Label>
             </StackLayout>
 
             <StackLayout class="input-field" row="1" col="1">
                 <Label class="label font-weight-bold m-b-5" text="{{ 'add.form.date' | translate }}"></Label>
-                <DatePickerField class="input" formControlName="publishDate" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection"></DatePickerField>
-                <StackLayout class="hr-light"></StackLayout>
+                <DatePickerField class="input" formControlName="publishDate" pickerOkText="Approve" pickerCancelText="Reject" pickerTitle="Confirm predefined date selection">
+                </DatePickerField>
+                <Label class="divider" [ngClass]="{ invalidField : fieldInvalid('publishDate') }"></Label>
             </StackLayout>
         </GridLayout>
 
-        <StackLayout class="input-field" horizontalAlignment="center" width="50%">
-            <Label class="label font-weight-bold m-t-10" horizontalAlignment="center" text="{{ 'add.form.check' | translate }}"></Label>
-            <GridLayout rows="auto, auto" columns="*,*">
-                <Switch formControlName="checked" class="switch m-0" row="0" col="0"></Switch>
-                <Label class="h3 p-15" [text]="checkedText" row="0" col="1" textWrap="true"></Label>
+        <StackLayout class="input-field" horizontalAlignment="center" width="40%">
+            <Label class="label font-weight-bold" horizontalAlignment="center" text="{{ 'add.form.check' | translate }}"></Label>
+            <GridLayout rows="auto, auto" columns="20, *,70">
+                <Label row="0" col="0"></Label>
+                <Switch formControlName="checked" class="switch m-0 p-0" row="0" col="1" horizontalAlignment="right"></Switch>
+                <Label class="h3 p-t-15" [text]="checkedText" row="0" col="2" horizontalAlignment="left"></Label>
             </GridLayout>
         </StackLayout>
 
-        <Button text="Save this record" class="btn btn-primary" (tap)="save()"></Button>
+        <Button text="Save this record" class="btn btn-primary" (tap)="save()" [isEnabled]="ccRecordForm.valid"></Button>
     </form>
-
-
 </StackLayout>

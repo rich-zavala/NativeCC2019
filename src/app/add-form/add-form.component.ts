@@ -1,9 +1,12 @@
 
-
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+// tslint:disable: max-line-length
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import * as app from "tns-core-modules/application";
+
+import { ObservableArray } from "tns-core-modules/data/observable-array";
+import { TokenModel, AutoCompleteEventData, } from "nativescript-ui-autocomplete";
 
 import { CollectionService } from "../services/collection.service";
 import { CCRecord } from "../../../src/models/record";
@@ -21,8 +24,7 @@ import * as lodash from "lodash";
     templateUrl: "./add-form.component.html"
 })
 export class AddFormComponent implements OnInit {
-    // @ViewChild("title") titleField: any;
-    // @ViewChild("volumen") volumenField: any;
+    @ViewChild("autocomplete") autocomplete: ElementRef;
 
     ccRecordForm: FormGroup = new FormGroup({
         title: new FormControl("", Validators.required),
@@ -33,13 +35,7 @@ export class AddFormComponent implements OnInit {
         publishDate: new FormControl("", Validators.required)
     });
 
-    titles: string[] = [];
-    filteredTitles: string[] = [];
-    showAutocomplete = false;
-    lockAutocompleteHidden = false;
-
-    private backSubs: Rx.Subscription;
-
+    titles: ObservableArray<TokenModel>;
     private checkedText = "No";
     private strs;
 
@@ -51,12 +47,11 @@ export class AddFormComponent implements OnInit {
 
         this.updateTitles();
         this.initForm();
+        this.ccRecordForm.controls.checked.valueChanges.subscribe(value => this.checkedText = value ? "Yes" : "No");
     }
 
     ngOnInit() {
         // setTimeout(() => this.titleField.setFocus(), 500);
-
-        // console.log("titleField", this.titleField);
     }
 
     onDrawerButtonTap(): void {
@@ -64,36 +59,46 @@ export class AddFormComponent implements OnInit {
         sideDrawer.showDrawer();
     }
 
+    private fieldInvalid(controlName: string) {
+        const control = this.ccRecordForm.controls[controlName];
+        return control.touched && control.invalid;
+    }
+
     private updateTitles() {
-        return this.db.getSeries().subscribe(titles => {
-            console.log("updateTitles", titles);
-            this.titles = titles.map(t => t.name);
-        });
+        this.titles = new ObservableArray<TokenModel>();
+        this.db.getSeries().subscribe(titles => this.titles.push(...titles.map(t => new TokenModel(t.name, undefined))));
+    }
+
+    get dataTitles(): ObservableArray<TokenModel> {
+        return this.titles;
+    }
+
+    public onAutoCompleteLoad(args: AutoCompleteEventData) {
+        const autocomplete = args.object;
+        const rad = autocomplete.android;
+        const nativeEditText = rad.getTextField();
+        nativeEditText.setTextSize(16);
+        nativeEditText.setPadding(0, 0, 0, 0);
+        this.autoCompleteReset();
+    }
+
+    public onTitleTextChanged(args) {
+        this.ccRecordForm.controls.title.setValue(args.text);
+        this.ccRecordForm.controls.title.updateValueAndValidity();
+    }
+
+    public autoCompleteReset() {
+        if (this.autocomplete) {
+            const natEle = this.autocomplete.nativeElement;
+            natEle.android.getTextField().requestFocus();
+            natEle.resetAutoComplete();
+        }
     }
 
     private initForm() {
+        this.autoCompleteReset();
         this.ccRecordForm.reset();
         this.ccRecordForm.controls.publishDate.setValue(moment().format(DATE_FORMAT));
-
-
-        this.ccRecordForm.controls.title.valueChanges
-            .subscribe(
-                value => {
-                    if (value) {
-                        if (value.length < 3) { // Three characters minimum
-                            this.filteredTitles = [];
-                        } else {
-                            const filterValue = value.toLowerCase();
-                            this.filteredTitles = this.titles.filter(option => option.toLowerCase().includes(filterValue));
-                        }
-
-                        this.showAutocomplete = this.filteredTitles.length > 0;
-                    }
-                }
-            );
-
-
-        return this.ccRecordForm.controls.checked.valueChanges.subscribe(value => this.checkedText = value ? "Yes" : "No");
     }
 
     updateTitle() {
@@ -103,34 +108,15 @@ export class AddFormComponent implements OnInit {
         }
     }
 
-    private selectTitle(option: string) {
-        this.ccRecordForm.controls.title.setValue(option);
-        this.ccRecordForm.controls.title.updateValueAndValidity();
-        this.hideAutocomplete();
-        // this.volumenField.setFocus();
-    }
-
-    private hideAutocomplete() {
-        this.showAutocomplete = false;
-    }
-
-    private hideAutocompleteLock() {
-        this.lockAutocompleteHidden = true;
-        this.hideAutocomplete();
-    }
-
     save() {
-        this.lockAutocompleteHidden = false; // Unlock autocomplete
         for (const i in this.ccRecordForm.value) {
             if (typeof this.ccRecordForm.value[i] === "string") {
                 this.ccRecordForm.value[i] = this.ccRecordForm.value[i].trim();
             }
         }
 
-        const ccValue = lodash.cloneDeep(this.ccRecordForm.value);
-        ccValue.publishDate = moment(ccValue.publishDate).format(DATE_FORMAT);
-
-        this.db.insert(this.ccRecordForm.value)
+        const ccRecord = new CCRecord(this.ccRecordForm.value);
+        this.db.insert(ccRecord)
             .subscribe(
                 res => {
                     if (res.duplicate) {
@@ -158,7 +144,7 @@ export class AddFormComponent implements OnInit {
         // this.vibration.vibrate(700);
 
         const header = this.strs.header;
-        const variant = cc.variant.length > 0 ? `${this.strs.variant}:\n${cc.variant}\n` : "";
+        const variant = cc.variant && cc.variant.length > 0 ? `${this.strs.variant}:\n${cc.variant}\n` : "";
         const nativeMessage = `${cc.title} #${cc.volumen}\n${variant}\n${this.strs.dateRegistered}:\n${cc.detailDates.registry}\n\n${this.strs.message}`;
 
         alert(nativeMessage);

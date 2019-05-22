@@ -8,6 +8,7 @@ import { AddFormComponent } from "./add-form.component";
 
 import { TranslateModule } from "@ngx-translate/core";
 import { NativeScriptDateTimePickerModule, } from "nativescript-datetimepicker/angular";
+import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autocomplete/angular";
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { NativeScriptDateTimePickerModule, } from "nativescript-datetimepicker/a
         NativeScriptFormsModule,
         ReactiveFormsModule,
         TranslateModule,
-        NativeScriptDateTimePickerModule
+        NativeScriptDateTimePickerModule,
+        NativeScriptUIAutoCompleteTextViewModule
     ],
     declarations: [
         AddFormComponent
