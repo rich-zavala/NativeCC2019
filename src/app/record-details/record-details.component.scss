@@ -1,0 +1,68 @@
+.container {
+    background-color: rgb(241, 241, 241);
+
+    .info {
+        padding: 10;
+
+        .volumen {
+            font-size: 20px;
+        }
+    }
+
+    .label {
+        font-size: 12px;
+    }
+
+    .data {
+        color: black;
+    }
+
+    .owned {
+        padding-top: 10;
+        padding-left: 10;
+        padding-right: 5;
+    }
+}
+
+/* ion-card-header {
+    .info {
+        flex: 1;
+        color: var(--ion-color-light);
+
+        div {
+            color: var(--ion-color-medium);
+            font-style: italic;
+        }
+    }
+
+    .volumen {
+        font-size: 2rem;
+        line-height: 1;
+    }
+
+}
+
+.detail-row {
+    margin-bottom: 1rem;
+
+    small {
+        margin-bottom: .2rem;
+        display: block;
+        color: var(--ion-color-medium);
+    }
+
+    &.checked-state-row {
+        margin: 0;
+        height: 36px;
+
+        .checked-state-label {
+            justify-content: space-between;
+            flex: 1;
+            align-items: center;
+
+            .checkboxContainer {
+                margin-right: -2px;
+            }
+        }
+    }
+} */

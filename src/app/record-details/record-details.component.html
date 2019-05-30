@@ -1,0 +1,102 @@
+<ActionBar class="action-bar">
+  <Label [text]="cc.title" class="action-bar-title"></Label>
+  <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="close()"></NavigationButton>
+  <!-- <NavigationButton class="action-bar-item" icon="res://back" (tap)="close()"></NavigationButton> -->
+  <ActionItem ios.position="right" android.position="popup">
+    <Label text="&#xf002;" class="fa menu-icon" (tap)="searching = !searching"></Label>
+  </ActionItem>
+</ActionBar>
+
+
+<StackLayout class="m-20 p-10 container">
+  <GridLayout columns="*, auto" class="data info" height="42">
+    <Label row="0" col="0" [text]="cc.title" class="" textWrap="true"></Label>
+    <Label row="0" col="1" [text]="'#' + cc.volumen" class="volumen"></Label>
+  </GridLayout>
+  <StackLayout class="info">
+    <Label text="{{ 'details.price' | translate }}" class="label"></Label>
+    <Label [text]="priceCurrency" class="data"></Label>
+  </StackLayout>
+  <StackLayout class="info">
+    <Label text="{{ 'details.publishedDate' | translate }}" class="label"></Label>
+    <Label [text]="cc.detailDates.published" class="data"></Label>
+  </StackLayout>
+  <StackLayout class="info">
+    <Label text="{{ 'details.registryDate' | translate }}" class="label"></Label>
+    <Label [text]="cc.detailDates.registry" class="data"></Label>
+  </StackLayout>
+  <GridLayout class="owned" columns="*, auto" rows="auto, auto" height="auto">
+    <ng-container *ngIf="cc.checked">
+      <Label row="0" col="0" text="{{ 'details.owned' | translate }}" class="label"></Label>
+      <Label row="1" col="0" [text]="cc.detailDates.checked" class="data"></Label>
+    </ng-container>
+    <ng-container *ngIf="!cc.checked">
+      <Label row="0" col="0" rowSpan="2" text=" {{ 'details.notOwned' | translate }}" class="data"></Label>
+    </ng-container>
+    <StackLayout row="0" col="1" rowSpan="2" class="vcenter hcenter" height="20" horizontalAlignment="right">
+      <CheckBox #cb [checked]="checkState.checked" class="m-0 p-0" (checkedChange)="checkUpdate()"></CheckBox>
+    </StackLayout>
+  </GridLayout>
+</StackLayout>
+<!-- </Page> -->
+
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{cc.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card color="dark">
+    <ion-card-header class="flex">
+      <div class="info">
+        {{cc.title}}
+        <div *ngIf="cc.variant">{{ 'details.vatiant' | translate }}: {{cc.variant}}</div>
+      </div>
+      <div class="volumen">#{{cc.volumen}}</div>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="detail-row flex">
+        <ion-label>
+          <small>{{ 'details.price' | translate }}</small>
+          <div>{{cc.price | currency}}</div>
+        </ion-label>
+      </div>
+      <div class="detail-row flex">
+        <ion-label>
+          <small>{{ 'details.publishedDate' | translate }}</small>
+          <div>{{cc.detailDates.published}}</div>
+        </ion-label>
+      </div>
+      <div class="detail-row flex">
+        <ion-label>
+          <small>{{ 'details.registryDate' | translate }}</small>
+          <div>{{cc.detailDates.registry}}</div>
+        </ion-label>
+      </div>
+      <div class="detail-row flex checked-state-row">
+        <label class="checked-state-label flex fcenter">
+          <ion-label *ngIf="cc.checked" no-margin no-padding>{{ 'details.owned' | translate }}<br>{{cc.detailDates.checked}}</ion-label>
+          <ion-label *ngIf="!cc.checked" no-margin no-padding>{{ 'details.notOwned' | translate }}</ion-label>
+          <label class="checkboxContainer flex fcenter fvertical">
+            <input type="checkbox" class="hidden" *ngIf="!updatingCheckFromDetails" [(ngModel)]="checkState.checked" (change)="checkUpdate($event)">
+            <fa-icon *ngIf="checkState.checked" class="checkbox flex" [icon]="['fas', 'check-square']" [fixedWidth]="true"></fa-icon>
+            <i class="checkbox-square" [ngClass]="{ checked: checkState.checked }"></i>
+          </label>
+        </label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer slot="end" class="ion-padding">
+  <ion-button size="small" color="danger" expand="block" (click)="delete()">
+    {{ 'details.delete' | translate }}
+    <ion-icon slot="end" name="trash"></ion-icon>
+  </ion-button>
+</ion-footer> -->

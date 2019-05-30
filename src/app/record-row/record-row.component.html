@@ -1,25 +1,8 @@
-<DockLayout class="cc-row p-5" [ngClass]="{ odd: odd }" height="32">
-  <StackLayout class="m-r-5" dock="left" width="9%" verticalAlignment="center" horizontalAlignment="center">
+<GridLayout columns="32, *, auto, auto" class="cc-row p-t-5 p-b-5" [ngClass]="{ odd: odd }" (tap)="showDetails()">
+  <StackLayout row="0" col="0" class="vcenter hcenter p-r-5" height="20">
     <CheckBox #cb [checked]="checkState.checked" (checkedChange)="checkUpdate()"></CheckBox>
   </StackLayout>
-  <Label [text]="cc.title + ' ' + checkState.checked" class="m-r-5" dock="left" width="66%" textWrap="true"></Label>
-  <Label [text]="cc.priceCurrency()" class="m-r-5 text-right" dock="right" width="10%" verticalAlignment="center"></Label>
-  <Label [text]="'#' + cc.volumen" class="volumen m-r-5 text-right" dock="right" width="10%" verticalAlignment="center"></Label>
-
-  <StackLayout class="hr-light m-t-5"></StackLayout>
-</DockLayout>
-
-<!-- <div class="cc-row flex fvertical ion-activatable" [ngClass]="{ odd: odd }" (click)="showDetails($event)" ion-activatable>
-  <label class="checkboxContainer flex fcenter fvertical">
-    <input type="checkbox" class="hidden" *ngIf="!updatingCheckFromDetails" [(ngModel)]="checkState.checked" (change)="checkUpdate($event)">
-    <fa-icon *ngIf="checkState.checked" class="checkbox flex" [icon]="['fas', 'check-square']" [fixedWidth]="true"></fa-icon>
-    <i class="checkbox-square" [ngClass]="{ checked: checkState.checked }"></i>
-  </label>
-  <div class="title flex fcol">
-    <div class="ion-text-capitalize">{{cc.title}}</div>
-    <div class="variant" *ngIf="cc.variant">{{cc.variant}}</div>
-  </div>
-  <div class="volumen">#{{cc.volumen}}</div>
-  <div class="price">{{cc.priceCurrency()}}</div>
-  <ion-ripple-effect></ion-ripple-effect>
-</div> -->
+  <Label row="0" col="1" [text]="cc.title" class="vcenter p-l-5 p-r-5" textWrap="true"></Label>
+  <Label row="0" col="2" [text]="'#' + cc.volumen" class="vcenter volumen p-l-5 p-r-5 text-right"></Label>
+  <Label row="0" col="3" [text]="priceCurrency" class="vcenter p-l-5 p-r-5 text-right"></Label>
+</GridLayout>

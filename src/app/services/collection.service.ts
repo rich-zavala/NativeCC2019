@@ -19,6 +19,8 @@ export class CollectionService {
     updatedRecord$: Rx.Subject<CCRecord> = new Rx.Subject();
     deletedRecord$: Rx.Subject<IDeleteRecordResponse> = new Rx.Subject();
 
+    selectedRecord: CCRecord;
+
     constructor(
         private db: DbHandlingService
     ) { }
@@ -77,17 +79,17 @@ export class CollectionService {
 
             const uncheck = () => {
                 cc.uncheck();
-                this.updateRecord(cc, emmit);
-                resolve(true);
+                this.updateRecord(cc, emmit)
+                    .add(() => resolve(true));
             };
             const revert = () => resolve(false);
 
-            dialogs.confirm({
+            Rx.from(dialogs.confirm({
                 title,
                 message,
                 okButtonText,
                 cancelButtonText
-            }).then(result => {
+            })).subscribe(result => {
                 if (result) {
                     uncheck();
                 } else {
@@ -99,13 +101,11 @@ export class CollectionService {
 
     updateRecord(cc: CCRecord, emmit: boolean) {
         return this.db.db.update(cc)
-            .subscribe(
-                () => {
-                    if (emmit) {
-                        this.updatedRecord$.next(cc);
-                    }
+            .subscribe(() => {
+                if (emmit) {
+                    this.updatedRecord$.next(cc);
                 }
-            );
+            });
     }
 
     deleteRecord(cc: CCRecord) {

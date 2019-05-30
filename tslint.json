@@ -18,6 +18,7 @@
       true,
       140
     ],
+    "max-classes-per-file": false,
     "member-access": false,
     "member-ordering": [
       true,
@@ -49,11 +50,17 @@
     "no-output-on-prefix": true,
     "no-output-rename": true,
     "no-submodule-imports": false,
-    "no-trailing-whitespace": [true, "ignore-blank-lines"],
+    "no-trailing-whitespace": [
+      true,
+      "ignore-blank-lines"
+    ],
     "no-unnecessary-initializer": true,
     "no-use-before-declare": true,
     "no-var-requires": false,
-    "object-literal-key-quotes": [true, "as-needed"],
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
     "object-literal-sort-keys": false,
     "one-variable-per-declaration": false,
     "ordered-imports": false,
@@ -68,7 +75,8 @@
     "use-output-property-decorator": true,
     "use-pipe-transform-interface": true,
     "trailing-comma": false,
-    "whitespace": [true,
+    "whitespace": [
+      true,
       "check-branch",
       "check-decl",
       "check-operator",

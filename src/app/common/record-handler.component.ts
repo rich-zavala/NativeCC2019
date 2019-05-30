@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
-import { Switch } from "tns-core-modules/ui/switch";
-import { EventData } from "tns-core-modules/data/observable";
+
 import { CCRecord } from "../../models";
 import { CollectionService } from "../services/collection.service";
 
@@ -14,18 +13,17 @@ export class RecordHandlerComponent implements OnInit {
 
     public checkState = { checked: false };
     public emmitUpdates = false;
-
-    initialized = false;
+    public priceCurrency: string = "";
 
     constructor(public db: CollectionService) { }
 
     ngOnInit() {
         this.checkState.checked = this.cc.checked;
+        this.priceCurrency = this.cc.priceCurrency();
     }
 
     checkUpdate() {
-        if (this.checkState.checked && !this.initialized) {
-            this.initialized = true;
+        if (this.checkbox.nativeElement.checked === this.cc.checked) {
             return;
         }
 
@@ -36,9 +34,8 @@ export class RecordHandlerComponent implements OnInit {
         } else {
             this.db.uncheck(this.cc, this.emmitUpdates)
                 .subscribe(unchecked => {
-                    this.checkState.checked = !unchecked;
-                    if (!unchecked) {
-                        this.initialized = false; // To avoid double call
+                    this.checkState.checked = this.cc.checked;
+                    if (!unchecked && this.checkbox.nativeElement) {
                         this.checkbox.nativeElement.toggle();
                     }
                 });

@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
-import { NativeScriptCommonModule } from "nativescript-angular/common";
-import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NativeScriptCommonModule } from "nativescript-angular/common";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
-import { AddFormRoutingModule } from "./add-form-routing.module";
 import { AddFormComponent } from "./add-form.component";
 
 import { TranslateModule } from "@ngx-translate/core";
@@ -13,7 +13,9 @@ import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autoco
 @NgModule({
     imports: [
         NativeScriptCommonModule,
-        AddFormRoutingModule,
+        NativeScriptRouterModule.forChild([
+            { path: "", component: AddFormComponent }
+        ]),
         NativeScriptFormsModule,
         ReactiveFormsModule,
         TranslateModule,

@@ -14,13 +14,13 @@
   <ScrollView dock="bottom" (touch)="unfocusSearch()">
     <GridLayout [rows]="filteredRows">
       <ng-container *ngFor="let serie of seriesFiltered; let i = index">
-        <StackLayout [row]="i" class="m-t-5">
+        <StackLayout [row]="i" class="m-t-5 p-l-10 p-r-10">
           <DockLayout class="serie" [ngClass]="{ expanded: states[serie.name].expanded }" (tap)="expandToggle(serie)">
-            <Label text="left" class="m-l-10 m-r-10" dock="left" width="80%" height="100%" verticalAlignment="center" textWrap="true" [text]="serie.name"></Label>
-            <Label text="top" class="m-r-10 serie-detail text-right font-weight-bold" dock="top" [text]="serie.records.length + ' records'"></Label>
-            <Label text="bottom" class="m-r-10 serie-detail text-right" dock="bottom" [text]="dynCurrency(serie.total)"></Label>
+            <Label [text]="serie.name" class="m-r-10" dock="left" width="80%" height="100%" verticalAlignment="center" textWrap="true"></Label>
+            <Label [text]="serie.records.length + ' records'" class="serie-detail text-right font-weight-bold" dock="top"></Label>
+            <Label [text]="dynCurrency(serie.total)" class="serie-detail text-right" dock="bottom"></Label>
           </DockLayout>
-          <StackLayout *ngIf="states[serie.name].expanded" class="m-l-10 m-r-10 m-b-5 p-t-5">
+          <StackLayout *ngIf="states[serie.name].expanded" class="m-b-5 p-t-5">
             <app-record-row *ngFor="let cc of states[serie.name].records; let index = index; let odd = odd;" [cc]="cc" [odd]="odd"></app-record-row>
           </StackLayout>
           <StackLayout class="hr-light m-t-5"></StackLayout>
@@ -29,64 +29,3 @@
     </GridLayout>
   </ScrollView>
 </DockLayout>
-
-
-<!--
-  <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-searchbar placeholder="{{ 'series.filterPlaceholder' | translate }}" debounce="500" animated [(value)]="filterValue" (ionChange)="filterBar($event)"></ion-searchbar>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <div *ngIf="working" class="flex fcol fvertical worker margin20">
-    <ion-spinner></ion-spinner>
-  </div>
-
-  <ion-item-group>
-    <ng-container *ngFor="let serie of seriesFiltered">
-      <ion-item-divider [ngClass]="{ expanded: states[serie.name].expanded }" no-padding>
-        <ion-label class="flex fvertical ion-activatable" (click)="expandToggle(serie)" no-margin ion-activatable>
-          <div class="serie-name">{{serie.name}}</div>
-          <div class="serie-details">
-            <div class="count">{{serie.records.length}} records</div>
-            <div class="total">{{dynCurrency(serie.total)}}</div>
-          </div>
-          <ion-ripple-effect></ion-ripple-effect>
-        </ion-label>
-
-        <div class="card-container" *ngIf="states[serie.name].expanded">
-
-          <div *ngIf="states[serie.name].records.length === 0" class="flex fcenter">
-            <ion-spinner></ion-spinner>
-          </div>
-
-          <ion-card *ngIf="states[serie.name].records.length > 0" color="dark" no-margin>
-            <app-record-row *ngFor="let cc of states[serie.name].records; let index = index; let odd = odd;" [cc]="cc" [odd]="odd"></app-record-row>
-          </ion-card>
-        </div>
-      </ion-item-divider>
-    </ng-container>
-  </ion-item-group>
-
-  <ng-container *ngIf="showEmpty">
-    <ion-text class="flex fcol fvertical marginBottom20">
-      <h2>{{ 'noRecords' | translate }}</h2>
-      <ion-button strong="false" size="small" color="tertiary" (click)="openAddForm()">{{ 'isEmpty' | translate }}</ion-button>
-    </ion-text>
-  </ng-container>
-
-  <ng-container *ngIf="filterEmpty">
-    <ion-text class="flex fcol fvertical marginBottom20" color="medium">{{ 'isEmptyFilter' | translate }}</ion-text>
-  </ng-container>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="openAddForm()">
-    <ion-fab-button color="tertiary">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
--->

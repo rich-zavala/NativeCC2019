@@ -1,9 +1,8 @@
 import { Component, Input } from "@angular/core";
-// import { ModalController } from "@ionic/angular";
+import { RouterExtensions } from "nativescript-angular/router";
 
-import { RecordHandlerComponent } from "./record-handler.component";
-// import { RecordDetailsComponent } from "./record-details/record-details.component";
 import { CollectionService } from "../services/collection.service";
+import { RecordHandlerComponent } from "../common/record-handler.component";
 
 @Component({
   selector: "app-record-row",
@@ -16,31 +15,25 @@ export class RecordRowComponent extends RecordHandlerComponent {
 
   constructor(
     public db: CollectionService,
-    // private modalController: ModalController
+    private routerExtensions: RouterExtensions
   ) {
     super(db);
 
     db.updatedRecord$.subscribe(
       updatedRecord => {
         if (updatedRecord.id === this.cc.id) {
-          this.updatingCheckFromDetails = true;
-          setTimeout(() => { // To avoid double reaction
-            this.cc = updatedRecord;
-            this.checkState.checked = this.cc.checked;
-            this.updatingCheckFromDetails = false;
-          });
+          this.cc = updatedRecord;
+          this.checkState.checked = this.cc.checked;
+          if (this.checkbox.nativeElement) {
+            this.checkbox.nativeElement.toggle();
+          }
         }
       }
     );
   }
 
-  async showDetails($event) {
-    // if (!["i", "path", "svg", "input", "label"].includes($event.target.localName)) {
-    //   const modal = await this.modalController.create({
-    //     component: RecordDetailsComponent,
-    //     componentProps: { cc: this.cc }
-    //   });
-    //   return await modal.present();
-    // }
+  showDetails() {
+    this.db.selectedRecord = this.cc;
+    this.routerExtensions.navigate(["recordDetail"]);
   }
 }
