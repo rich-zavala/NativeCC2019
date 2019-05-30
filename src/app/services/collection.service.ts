@@ -6,6 +6,9 @@ import { DbHandlingService } from "./db-handling.service";
 
 import { ICCYear, CCRecord, ICCRecord, ICCSerie } from "../../../src/models";
 import { IDeleteRecordResponse, IInsertRecordResponse } from "../../../src/dbHandlers/dbHandler";
+
+import * as dialogs from "tns-core-modules/ui/dialogs";
+
 @Injectable({
     providedIn: "root"
 })
@@ -67,9 +70,11 @@ export class CollectionService {
                 observer.complete();
             };
 
-            const header = "Are you sure?";
-            const subHeader = "Please confirm this action";
-            const buttons = ["Keep it", "Uncheck it"];
+            const title = "Are you sure?";
+            const message = "Please confirm this action";
+            const okButtonText = "Uncheck it";
+            const cancelButtonText = "Keep it";
+
             const uncheck = () => {
                 cc.uncheck();
                 this.updateRecord(cc, emmit);
@@ -77,47 +82,18 @@ export class CollectionService {
             };
             const revert = () => resolve(false);
 
-            const alternativeDialog = async () => {
-                /*const alert = await this.alertController.create({
-                    header,
-                    buttons: [
-                        {
-                            text: buttons[1],
-                            cssClass: "secondary",
-                            handler: () => {
-                                cc.uncheck();
-                                this.updateRecord(cc, emmit);
-                                resolve(true);
-                            }
-                        },
-                        {
-                            text: buttons[0],
-                            role: "cancel",
-                            handler: () => revert()
-                        }]
-                });
-
-                await alert.present();*/
-            };
-
-            try {
-                /*Rx.from(this.dialogs.confirm(subHeader, header, buttons))
-                    .subscribe(
-                        option => {
-                            if (option === 1) {
-                                revert();
-                            } else {
-                                uncheck();
-                            }
-                        },
-                        e => {
-                            console.log("Error displaying dialog", e);
-                            alternativeDialog();
-                        }
-                    );*/
-            } catch (e) {
-                alternativeDialog();
-            }
+            dialogs.confirm({
+                title,
+                message,
+                okButtonText,
+                cancelButtonText
+            }).then(result => {
+                if (result) {
+                    uncheck();
+                } else {
+                    revert();
+                }
+            });
         });
     }
 

@@ -6,8 +6,6 @@ import * as Rx from "rxjs";
 import { finalize, toArray } from "rxjs/operators";
 import * as lodash from "lodash";
 import * as moment from "moment";
-import { Observable } from "tns-core-modules/ui/page/page";
-import { observe } from "tns-core-modules/ui/gestures/gestures";
 
 
 /*
@@ -36,7 +34,11 @@ CREATE TABLE "days" (
 );
  */
 
-const Sqlite = require("nativescript-sqlite");
+let Sqlite;
+try {
+    Sqlite = require("nativescript-sqlite");
+} catch (e) { }
+
 let DBInstance;
 
 const dbName = "ccdatabase.sqlite";
@@ -57,11 +59,6 @@ export class SQLiteHandler implements ICCDBHandler {
     private db: any;
 
     constructor() {
-        // if (Sqlite.exists(dbName)) {
-        //     Sqlite.deleteDatabase(dbName);
-        //     console.log("Exists so Delete");
-        // }
-
         this.db = DBInstance;
     }
 
@@ -127,12 +124,8 @@ export class SQLiteHandler implements ICCDBHandler {
                         let serieData: ICCSerie;
                         let returnObs: Rx.Observable<any>;
 
-                        console.log("XXXX serieDbData", serieDbData);
-
                         if (serieDbData) {
-                            console.log("Parsing", serieDbData.value);
                             serieData = JSON.parse(serieDbData.value);
-                            console.log("Parsed");
                             serieData.records.push(cc.id);
                             serieData.records = lodash.uniq(serieData.records);
                             serieData.total += cc.price;
@@ -179,7 +172,6 @@ export class SQLiteHandler implements ICCDBHandler {
                     returnObs = Rx.from(this.db.execSQL(`INSERT INTO days (date, year, value) VALUES (?, ?, ?)`, [dayData.date, dayData.year, JSON.stringify(dayData)]));
                 }
 
-                console.log("dayData", dayData);
                 returnObs.subscribe(() => {
                     observer.next(dayData);
                     observer.complete();
@@ -210,7 +202,6 @@ export class SQLiteHandler implements ICCDBHandler {
                         returnObs = Rx.from(this.db.execSQL(`INSERT INTO years (year, value) VALUES (?, ?)`, [yearData.year, JSON.stringify(yearData)]));
                     }
 
-                    console.log("yearData", yearData);
                     returnObs.subscribe(() => {
                         observer.next(yearData);
                         observer.complete();
@@ -225,11 +216,8 @@ export class SQLiteHandler implements ICCDBHandler {
             Rx.from(this.db.get(`SELECT value FROM years WHERE year=?`, [year]))
                 .subscribe(
                     (yearDbData: any) => {
-                        console.log("yearDbData", yearDbData);
                         if (yearDbData) {
-                            console.log("Parsing", yearDbData);
                             observer.next(JSON.parse(yearDbData.value));
-                            console.log("Parsed");
                         } else {
                             observer.next(null);
                         }
@@ -240,17 +228,13 @@ export class SQLiteHandler implements ICCDBHandler {
     }
 
     update(data: CCRecord): Rx.Observable<CCRecord> {
-        const recordData = data.insertable();
-        return new Rx.Observable(observer => {
-            this.getDay(data.publishDate).subscribe(
-                dayData => {
-                    Rx.from(this.db.execSQL(`UPDATE records SET value=? WHERE id=?`, [recordData, data.id]))
-                        .subscribe(() => {
-                            observer.next(data);
-                            observer.complete();
-                        });
-                });
-        });
+        const recordData = JSON.stringify(data.insertable());
+        return new Rx.Observable(observer =>
+            Rx.from(this.db.execSQL(`UPDATE records SET value=? WHERE id=?`, [recordData, data.id]))
+                .subscribe(() => {
+                    observer.next(data);
+                    observer.complete();
+                }));
     }
 
     getRecord(id: string): Rx.Observable<CCRecord> {
@@ -259,9 +243,7 @@ export class SQLiteHandler implements ICCDBHandler {
                 .subscribe(
                     (recordData: any) => {
                         if (recordData) {
-                            console.log("Parsing recordData", recordData);
                             observer.next(new CCRecord(JSON.parse(recordData.value)));
-                            console.log("Parsed");
                         } else {
                             observer.next(null);
                         }
@@ -276,11 +258,8 @@ export class SQLiteHandler implements ICCDBHandler {
             Rx.from(this.db.get(`SELECT value FROM days WHERE date=?`, [day]))
                 .subscribe(
                     (dayDbData: any) => {
-                        console.log("dayDbData", dayDbData);
                         if (dayDbData) {
-                            console.log("Parsing recordData", dayDbData);
                             observer.next(JSON.parse(dayDbData.value));
-                            console.log("Parsed");
                         } else {
                             observer.next(null);
                         }
@@ -291,7 +270,6 @@ export class SQLiteHandler implements ICCDBHandler {
     }
 
     getYears(): Rx.Observable<ICCYear[]> {
-        console.log(">>>>> getYears");
         return new Rx.Observable(observer =>
             Rx.from(this.db.all("SELECT * FROM years ORDER BY year DESC"))
                 .subscribe(
@@ -314,12 +292,10 @@ export class SQLiteHandler implements ICCDBHandler {
     }
 
     getSeries(): Rx.Observable<ICCSerie[]> {
-        console.log(">>>>> getSeries");
         return new Rx.Observable(observer =>
             Rx.from(this.db.all("SELECT * FROM series ORDER BY name"))
                 .subscribe(
                     (seriesDbData: any[]) => {
-                        console.log("seriesDbData", seriesDbData);
                         if (seriesDbData) {
                             const seriesData = seriesDbData.map(sdb => JSON.parse(sdb.value));
                             observer.next(seriesData);

@@ -1,0 +1,11 @@
+.serie-detail {
+    font-size: 11px;
+}
+
+.serie {
+    transition: all .3s;
+
+    &.expanded {
+        color: black;
+    }
+}

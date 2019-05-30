@@ -1,0 +1,25 @@
+<DockLayout class="cc-row p-5" [ngClass]="{ odd: odd }">
+  <StackLayout class="m-r-5" dock="left" width="11%" height="24" verticalAlignment="center" horizontalAlignment="center">
+    <Switch class="m-0 p-0" [checked]="checkState.checked" (checkedChange)="checkUpdate($event)"></Switch>
+  </StackLayout>
+  <Label [text]="cc.title + ' ' + checkState.checked" class="m-r-5" dock="left" width="65%" textWrap="true"></Label>
+  <Label [text]="cc.priceCurrency()" class="m-r-5 text-right" dock="right" width="9%" verticalAlignment="center"></Label>
+  <Label [text]="'#' + cc.volumen" class="volumen m-r-5 text-right" dock="right" width="10%" verticalAlignment="center"></Label>
+
+  <StackLayout class="hr-light m-t-5"></StackLayout>
+</DockLayout>
+
+<!-- <div class="cc-row flex fvertical ion-activatable" [ngClass]="{ odd: odd }" (click)="showDetails($event)" ion-activatable>
+  <label class="checkboxContainer flex fcenter fvertical">
+    <input type="checkbox" class="hidden" *ngIf="!updatingCheckFromDetails" [(ngModel)]="checkState.checked" (change)="checkUpdate($event)">
+    <fa-icon *ngIf="checkState.checked" class="checkbox flex" [icon]="['fas', 'check-square']" [fixedWidth]="true"></fa-icon>
+    <i class="checkbox-square" [ngClass]="{ checked: checkState.checked }"></i>
+  </label>
+  <div class="title flex fcol">
+    <div class="ion-text-capitalize">{{cc.title}}</div>
+    <div class="variant" *ngIf="cc.variant">{{cc.variant}}</div>
+  </div>
+  <div class="volumen">#{{cc.volumen}}</div>
+  <div class="price">{{cc.priceCurrency()}}</div>
+  <ion-ripple-effect></ion-ripple-effect>
+</div> -->

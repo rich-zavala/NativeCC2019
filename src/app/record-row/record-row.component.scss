@@ -1,0 +1,54 @@
+.cc-row {
+    background: lightblue;
+
+    &.odd {
+        background: lightgray;
+    }
+
+    .volumen {
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
+
+/*.cc-row {
+    line-height: 1;
+    flex: 1;
+    position: relative;
+
+    &.odd {
+        background: var(--ion-color-odd);
+    }
+
+    ion-checkbox {
+        --size: 1.6em;
+    }
+
+    label {
+        padding: 2px 6px 2px 2px;
+    }
+
+    &>div {
+        margin-right: 10px;
+    }
+
+    .title {
+        padding: 2px 0;
+        flex: 1;
+
+        .variant {
+            color: var(--ion-color-medium);
+            font-style: italic;
+        }
+    }
+
+    .volumen {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .price {
+        min-width: 36px;
+        text-align: right;
+    }
+}*/
