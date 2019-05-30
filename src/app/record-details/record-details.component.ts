@@ -6,6 +6,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { RecordHandlerComponent } from "../common/record-handler.component";
 import { CollectionService } from "../services/collection.service";
 
+import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as Rx from "rxjs";
 
 @Component({
@@ -33,46 +34,22 @@ export class RecordDetailsComponent extends RecordHandlerComponent {
     this.router.back();
   }
 
-  // async delete() {
-  //   const callback = () => this.db.deleteRecord(this.cc).add(() => this.close());
-  //   const alternativeDialog = async () => {
-  //     const alert = await this.alertController.create({
-  //       header: this.dialogStr.header,
-  //       subHeader: this.dialogStr.subHeader,
-  //       buttons: [
-  //         {
-  //           text: this.dialogStr.btns[0],
-  //           cssClass: "secondary",
-  //           handler: () => callback()
-  //         },
-  //         {
-  //           text: this.dialogStr.btns[1],
-  //           role: "cancel"
-  //         }]
-  //     });
+  delete() {
+    const title = this.dialogStr.header;
+    const message = this.dialogStr.subHeader;
+    const okButtonText = this.dialogStr.btns[0];
+    const cancelButtonText = this.dialogStr.btns[1];
 
-  //     await alert.present();
-  //   };
-
-  //   try {
-  //     Rx.from(this.dialogs.confirm(this.dialogStr.subHeader, this.dialogStr.header, this.dialogStr.btns))
-  //       .subscribe(
-  //         option => {
-  //           if (option === 1) {
-  //             callback();
-  //           }
-  //         },
-  //         e => {
-  //           console.log(this.dialogStr.fileError, e);
-  //           alternativeDialog();
-  //         }
-  //       );
-  //   } catch (e) {
-  //     alternativeDialog();
-  //   }
-  // }
-
-  // onBack() {
-  //   this.router.back();
-  // }
+    Rx.from(dialogs.confirm({
+      title,
+      message,
+      okButtonText,
+      cancelButtonText
+    })).subscribe(result => {
+      if (result) {
+        this.db.deleteRecord(this.cc)
+          .add(() => this.close());
+      }
+    });
+  }
 }

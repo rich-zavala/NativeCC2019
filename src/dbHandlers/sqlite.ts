@@ -2,43 +2,13 @@
 import { ICCDBHandler, IInsertRecordResponse, IDeleteRecordResponse } from "./dbHandler";
 import { ICCRecord, CCRecord, ICCDay, ICCYear, ICCSerie } from "../../src/models";
 
-import * as Rx from "rxjs";
-import { finalize, toArray } from "rxjs/operators";
 import * as lodash from "lodash";
 import * as moment from "moment";
 
+import * as Rx from "rxjs";
+import { finalize, toArray, map } from "rxjs/operators";
 
-/*
-CREATE TABLE "years" (
-	"year"	INTEGER UNIQUE,
-	"value"	TEXT,
-	PRIMARY KEY("year")
-);
-CREATE TABLE "series" (
-	"name"	TEXT UNIQUE,
-	"value"	INTEGER,
-	PRIMARY KEY("name")
-);
-CREATE TABLE "records" (
-	"id"	TEXT UNIQUE,
-	"publishDate"	TEXT,
-	"value"	TEXT,
-	PRIMARY KEY("id")
-);
-CREATE TABLE "days" (
-	"date"	BLOB UNIQUE,
-	"year"	INTEGER,
-	"total"	NUMERIC,
-	"value"	TEXT,
-	PRIMARY KEY("date")
-);
- */
-
-let Sqlite;
-try {
-    Sqlite = require("nativescript-sqlite");
-} catch (e) { }
-
+const Sqlite = require("nativescript-sqlite");
 let DBInstance;
 
 const dbName = "ccdatabase.sqlite";
@@ -329,68 +299,75 @@ export class SQLiteHandler implements ICCDBHandler {
 
         const sequentialUpdates: Rx.Observable<any>[] = [];
         return new Rx.Observable(observer => {
-            // Rx.from(this.dbRecords.delete(cc.id)).subscribe(() => {
-            //     resp.recordDeleted = true;
-            //     const subjSerie = new Rx.Observable(obsSerie => {
-            //         Rx.from(this.dbSeries.get(cc.title)).subscribe(serieData => {
-            //             serieData.records.splice(serieData.records.indexOf(cc.id), 1);
-            //             if (serieData.records.length > 0) {
-            //                 serieData.total -= cc.price;
-            //                 resp.serieTotal = serieData.total;
-            //                 sequentialUpdates.push(Rx.from(this.dbSeries.put(serieData)));
-            //             } else {
-            //                 resp.serieDeleted = true;
-            //                 sequentialUpdates.push(Rx.from(this.dbSeries.delete(serieData.name)));
-            //             }
-            //             obsSerie.next(null);
-            //             obsSerie.complete();
-            //         });
-            //     });
+            Rx.from(this.db.execSQL(`DELETE FROM records WHERE id=?`, [cc.id]))
+                .subscribe(() => {
+                    resp.recordDeleted = true;
+                    const subjSerie = new Rx.Observable(obsSerie => {
+                        Rx.from(this.db.get(`SELECT value FROM series WHERE name=?`, [cc.title]))
+                            .pipe(map((d: any) => JSON.parse(d.value)))
+                            .subscribe(serieData => {
+                                serieData.records.splice(serieData.records.indexOf(cc.id), 1);
+                                if (serieData.records.length > 0) {
+                                    serieData.total -= cc.price;
+                                    resp.serieTotal = serieData.total;
+                                    sequentialUpdates.push(Rx.from(this.db.execSQL(`UPDATE series SET value=? WHERE name=?`, [JSON.stringify(serieData), cc.title])));
+                                } else {
+                                    resp.serieDeleted = true;
+                                    sequentialUpdates.push(Rx.from(this.db.execSQL(`DELETE FROM series WHERE name=?`, [cc.title])));
+                                }
+                                obsSerie.next(null);
+                                obsSerie.complete();
+                            });
+                    });
 
-            //     const subjDates = new Rx.Observable(obsDates => {
-            //         const dayStr = cc.publishDate;
-            //         Rx.from(this.dbDays.get(dayStr)).subscribe(dayData => {
-            //             dayData.records.splice(dayData.records.findIndex(rId => rId === cc.id), 1);
-            //             if (dayData.records.length > 0) {
-            //                 dayData.total -= cc.price;
-            //                 resp.dayTotal = dayData.total;
-            //                 sequentialUpdates.push(Rx.from(this.dbDays.put(dayData)));
-            //             } else {
-            //                 resp.dayDeleted = true;
-            //                 sequentialUpdates.push(Rx.from(this.dbDays.delete(dayStr)));
+                    const subjDates = new Rx.Observable(obsDates => {
+                        const dayStr = cc.publishDate;
+                        Rx.from(this.db.get(`SELECT value FROM days WHERE date=?`, [dayStr]))
+                            .pipe(map((d: any) => JSON.parse(d.value)))
+                            .subscribe(dayData => {
+                                dayData.records.splice(dayData.records.findIndex(rId => rId === cc.id), 1);
+                                if (dayData.records.length > 0) {
+                                    dayData.total -= cc.price;
+                                    resp.dayTotal = dayData.total;
+                                    sequentialUpdates.push(Rx.from(this.db.execSQL(`UPDATE days SET value=? WHERE date=?`, [JSON.stringify(dayData), dayStr])));
+                                } else {
+                                    resp.dayDeleted = true;
+                                    sequentialUpdates.push(Rx.from(this.db.execSQL(`DELETE FROM days WHERE date=?`, [dayStr])));
 
-            //                 const year = cc.getPublishYear();
-            //                 Rx.from(this.dbYears.get(year as any)).subscribe(yearData => {
-            //                     yearData.days.splice(yearData.days.indexOf(dayStr), 1);
-            //                     if (yearData.days.length > 0) {
-            //                         yearData.total -= cc.price;
-            //                         resp.yearTotal = yearData.total;
-            //                         sequentialUpdates.push(Rx.from(this.dbYears.put(yearData)));
-            //                     } else {
-            //                         resp.yearDeleted = true;
-            //                         sequentialUpdates.push(Rx.from(this.dbYears.delete(year as any)));
-            //                     }
-            //                 });
-            //             }
-            //         });
-            //         obsDates.next(null);
-            //         obsDates.complete();
-            //     });
+                                    const year = cc.getPublishYear();
+                                    Rx.from(this.db.get(`SELECT value FROM years WHERE year=?`, [year]))
+                                        .pipe(map((d: any) => JSON.parse(d.value)))
+                                        .subscribe(yearData => {
+                                            yearData.days.splice(yearData.days.indexOf(dayStr), 1);
+                                            if (yearData.days.length > 0) {
+                                                yearData.total -= cc.price;
+                                                resp.yearTotal = yearData.total;
+                                                sequentialUpdates.push(Rx.from(this.db.execSQL(`UPDATE years SET value=? WHERE year=?`, [JSON.stringify(yearData), year])));
+                                            } else {
+                                                resp.yearDeleted = true;
+                                                sequentialUpdates.push(Rx.from(this.db.execSQL(`DELETE FROM years WHERE year=?`, [year])));
+                                            }
+                                        });
+                                }
+                            });
+                        obsDates.next(null);
+                        obsDates.complete();
+                    });
 
-            //     Rx.merge(subjSerie, subjDates)
-            //         .pipe(
-            //             toArray(),
-            //             finalize(() => {
-            //                 Rx.merge(...sequentialUpdates)
-            //                     .subscribe(
-            //                         () => {
-            //                             observer.next(resp);
-            //                             observer.complete();
-            //                         }
-            //                     );
-            //             }))
-            //         .subscribe();
-            // });
+                    Rx.merge(subjSerie, subjDates)
+                        .pipe(
+                            toArray(),
+                            finalize(() => {
+                                Rx.merge(...sequentialUpdates)
+                                    .subscribe(
+                                        () => {
+                                            observer.next(resp);
+                                            observer.complete();
+                                        }
+                                    );
+                            }))
+                        .subscribe();
+                });
         });
     }
 

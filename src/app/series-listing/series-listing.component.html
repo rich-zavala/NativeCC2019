@@ -1,8 +1,8 @@
 <ActionBar class="action-bar">
   <Label text="Series" class="action-bar-title"></Label>
   <NavigationButton class="action-bar-item" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem ios.position="right" android.position="popup">
-    <Label text="&#xf002;" class="fa menu-icon" [ngClass]="{isandro : actionAndroid}" (tap)="searching = !searching"></Label>
+  <ActionItem (tap)="toggleFilter()">
+    <Label text="&#xf002;" class="fa"></Label>
   </ActionItem>
 </ActionBar>
 

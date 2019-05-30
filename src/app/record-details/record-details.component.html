@@ -1,12 +1,10 @@
 <ActionBar class="action-bar">
   <Label [text]="cc.title" class="action-bar-title"></Label>
-  <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="close()"></NavigationButton>
-  <!-- <NavigationButton class="action-bar-item" icon="res://back" (tap)="close()"></NavigationButton> -->
-  <ActionItem ios.position="right" android.position="popup">
-    <Label text="&#xf002;" class="fa menu-icon" (tap)="searching = !searching"></Label>
+  <NavigationButton android.systemIcon="ic_menu_back" (tap)="close()"></NavigationButton>
+  <ActionItem (tap)="delete()">
+    <Label text="&#xf1f8;" class="fa"></Label>
   </ActionItem>
 </ActionBar>
-
 
 <StackLayout class="m-20 p-10 container">
   <GridLayout columns="*, auto" class="data info" height="42">

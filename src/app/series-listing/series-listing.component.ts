@@ -54,10 +54,7 @@ export class SeriesListingComponent implements OnInit {
   constructor(
     private db: CollectionService,
     private page: Page
-    // private modalCtrl: ModalController
-  ) {
-    // db.updateSeries();
-  }
+  ) { }
 
   ngOnInit() {
     this.db.series$.subscribe(d => {
@@ -98,6 +95,14 @@ export class SeriesListingComponent implements OnInit {
   onDrawerButtonTap(): void {
     const sideDrawer = <RadSideDrawer>app.getRootView();
     sideDrawer.showDrawer();
+  }
+
+  private toggleFilter() {
+    if (this.searching) {
+      this.clearFilter();
+    } else {
+      this.searching = !this.searching;
+    }
   }
 
   private filter() {
