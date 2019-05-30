@@ -32,6 +32,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "nativescript-angular": "~7.2.0",
+    "nativescript-checkbox": "^3.0.3",
     "nativescript-datetimepicker": "^1.2.0",
     "nativescript-sqlite": "^2.3.3",
     "nativescript-theme-core": "~1.0.4",

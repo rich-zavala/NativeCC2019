@@ -1,9 +1,9 @@
-<DockLayout class="cc-row p-5" [ngClass]="{ odd: odd }">
-  <StackLayout class="m-r-5" dock="left" width="11%" height="24" verticalAlignment="center" horizontalAlignment="center">
-    <Switch class="m-0 p-0" [checked]="checkState.checked" (checkedChange)="checkUpdate($event)"></Switch>
+<DockLayout class="cc-row p-5" [ngClass]="{ odd: odd }" height="32">
+  <StackLayout class="m-r-5" dock="left" width="9%" verticalAlignment="center" horizontalAlignment="center">
+    <CheckBox #cb [checked]="checkState.checked" (checkedChange)="checkUpdate()"></CheckBox>
   </StackLayout>
-  <Label [text]="cc.title + ' ' + checkState.checked" class="m-r-5" dock="left" width="65%" textWrap="true"></Label>
-  <Label [text]="cc.priceCurrency()" class="m-r-5 text-right" dock="right" width="9%" verticalAlignment="center"></Label>
+  <Label [text]="cc.title + ' ' + checkState.checked" class="m-r-5" dock="left" width="66%" textWrap="true"></Label>
+  <Label [text]="cc.priceCurrency()" class="m-r-5 text-right" dock="right" width="10%" verticalAlignment="center"></Label>
   <Label [text]="'#' + cc.volumen" class="volumen m-r-5 text-right" dock="right" width="10%" verticalAlignment="center"></Label>
 
   <StackLayout class="hr-light m-t-5"></StackLayout>
