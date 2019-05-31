@@ -6,26 +6,32 @@
   </ActionItem>
 </ActionBar>
 
-<DockLayout class="page" stretchLastChild="true">
-  <StackLayout *ngIf="searching" class="form input-field m-0 p-0" dock="top">
-    <SearchBar id="searchbar" class="seriesSearchBar input" hint="Search a serie by title" (textChange)="filterBar($event)" (clear)="clearFilter($event)"></SearchBar>
-    <StackLayout class="hr-light"></StackLayout>
-  </StackLayout>
-  <ScrollView dock="bottom" (touch)="unfocusSearch()">
-    <GridLayout [rows]="filteredRows">
-      <ng-container *ngFor="let serie of seriesFiltered; let i = index">
-        <StackLayout [row]="i" class="m-t-5 p-l-10 p-r-10">
-          <DockLayout class="serie" [ngClass]="{ expanded: states[serie.name].expanded }" (tap)="expandToggle(serie)">
-            <Label [text]="serie.name" class="m-r-10" dock="left" width="80%" height="100%" verticalAlignment="center" textWrap="true"></Label>
-            <Label [text]="serie.records.length + ' records'" class="serie-detail text-right font-weight-bold" dock="top"></Label>
-            <Label [text]="dynCurrency(serie.total)" class="serie-detail text-right" dock="bottom"></Label>
-          </DockLayout>
-          <StackLayout *ngIf="states[serie.name].expanded" class="m-b-5 p-t-5">
-            <app-record-row *ngFor="let cc of states[serie.name].records; let index = index; let odd = odd;" [cc]="cc" [odd]="odd"></app-record-row>
+<GridLayout rows="auto, *">
+  <Fab icon="res://ic_add_white" class="fab-button" row="1" (tap)="openAddForm()"></Fab>
+  <DockLayout row="1" class="page">
+    <StackLayout *ngIf="searching" class="form input-field m-0 p-0" dock="top">
+      <SearchBar id="searchbar" class="seriesSearchBar input" hint="Search a serie by title" (textChange)="filterBar($event)" (clear)="clearFilter($event)"></SearchBar>
+      <StackLayout class="hr-light"></StackLayout>
+    </StackLayout>
+    <ScrollView dock="bottom" (touch)="unfocusSearch()">
+      <GridLayout [rows]="filteredRows">
+        <ng-container *ngFor="let serie of seriesFiltered; let i = index">
+          <StackLayout [row]="i" class="m-t-5 p-l-10 p-r-10">
+            <DockLayout class="serie" [ngClass]="{ expanded: states[serie.name].expanded }" (tap)="expandToggle(serie)">
+              <Label [text]="serie.name" class="m-r-10" dock="left" width="80%" height="100%" verticalAlignment="center" textWrap="true"></Label>
+              <Label [text]="serie.records.length + ' records'" class="serie-detail text-right font-weight-bold" dock="top"></Label>
+              <Label [text]="dynCurrency(serie.total)" class="serie-detail text-right" dock="bottom"></Label>
+            </DockLayout>
+            <StackLayout *ngIf="states[serie.name].expanded" class="m-b-5 p-t-5">
+              <app-record-row *ngFor="let cc of states[serie.name].records; let index = index; let odd = odd;" [cc]="cc" [odd]="odd"></app-record-row>
+            </StackLayout>
+            <StackLayout class="hr-light m-t-5"></StackLayout>
           </StackLayout>
-          <StackLayout class="hr-light m-t-5"></StackLayout>
-        </StackLayout>
-      </ng-container>
-    </GridLayout>
-  </ScrollView>
-</DockLayout>
+        </ng-container>
+
+        <!-- Bottom margin for Fab displaying -->
+        <StackLayout [row]="seriesFiltered.length + 1" class="m-30 p-5"> </StackLayout>
+      </GridLayout>
+    </ScrollView>
+  </DockLayout>
+</GridLayout>

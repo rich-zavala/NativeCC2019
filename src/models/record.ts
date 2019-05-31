@@ -30,7 +30,7 @@ export class CCRecord implements ICCRecord {
     constructor(data: ICCRecord) {
         this.title = data.title;
         this.volumen = data.volumen;
-        this.price = data.price;
+        this.price = parseFloat(data.price as any);
         this.variant = data.variant;
         this.checked = data.checked || false;
         this.publishDate = moment(data.publishDate).format(DATE_FORMAT);

@@ -1,30 +1,14 @@
-
-// tslint:disable: max-line-length
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { RouterExtensions } from "nativescript-angular/router";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { Page } from "tns-core-modules/ui/page/page";
 import { SearchBar } from "tns-core-modules/ui/search-bar";
 import * as app from "tns-core-modules/application";
 
-
-import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { TokenModel, AutoCompleteEventData, } from "nativescript-ui-autocomplete";
-
-// import { CollectionService } from "../services/collection.service";
-// import { CCRecord } from "../../../src/models/record";
-import { DATE_FORMAT } from "../../../src/constants/formats";
-
-import { TranslateService } from "@ngx-translate/core";
-
-
-// import { Component, OnInit } from "@angular/core";
-// import { ModalController } from "@ionic/angular";
 import { toArray } from "rxjs/operators";
 
 import { ICCSerie, CCRecord } from "../../models";
 import { CollectionService } from "../services/collection.service";
-import { AddFormComponent } from "../add-form/add-form.component";
 
 import * as Rx from "rxjs";
 import * as lodash from "lodash";
@@ -53,7 +37,8 @@ export class SeriesListingComponent implements OnInit {
 
   constructor(
     private db: CollectionService,
-    private page: Page
+    private page: Page,
+    private routerExtensions: RouterExtensions
   ) { }
 
   ngOnInit() {
@@ -70,23 +55,28 @@ export class SeriesListingComponent implements OnInit {
 
     this.db.insertedRecord$.subscribe(
       record => {
-        if (this.states[record.title]) {
+        const addRecordToState = () =>
           this.states[record.title].records = lodash.orderBy([...this.states[record.title].records, record], ["volumen"]);
+
+        if (this.states[record.title]) {
+          addRecordToState();
         } else {
-          this.db.updateSeries();
+          this.db.updateSeries()
+            .add(() => addRecordToState());
         }
       }
     );
 
     this.db.deletedRecord$.subscribe(deleteInfo => {
+      lodash.remove(this.states[deleteInfo.record.title].records, r => r.id === deleteInfo.record.id);
+
       if (deleteInfo.serieDeleted) {
         this.series = this.series.filter(s => s.name !== deleteInfo.record.title);
         this.filter();
-      } else {
-        lodash.remove(this.states[deleteInfo.record.title].records, r => r.id === deleteInfo.record.id);
       }
 
       this.showEmpty = this.series.length === 0;
+      this.db.updateSeries();
     });
 
     this.db.updateSeries();
@@ -161,15 +151,13 @@ export class SeriesListingComponent implements OnInit {
     return dynCurrency(parseFloat(total));
   }
 
-  async openAddForm() {
-    // const modal = await this.modalCtrl.create({
-    //   component: AddFormComponent
-    // });
-    // return await modal.present();
+  private openAddForm() {
+    this.routerExtensions.navigate(["addForm"]);
   }
 
   // Rows contructors
+  // TODO: THIS MUST BE OPTIMIZED!!!
   get filteredRows() {
-    return this.seriesFiltered.map(s => "auto").join(" ");
+    return [...this.seriesFiltered, null].map(s => "auto").join(" ");
   }
 }

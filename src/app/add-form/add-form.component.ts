@@ -1,6 +1,5 @@
-
 // tslint:disable: max-line-length
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import * as app from "tns-core-modules/application";
@@ -9,21 +8,19 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { TokenModel, AutoCompleteEventData, } from "nativescript-ui-autocomplete";
 
 import { CollectionService } from "../services/collection.service";
+import { TranslateService } from "@ngx-translate/core";
+
 import { CCRecord } from "../../../src/models/record";
 import { DATE_FORMAT } from "../../../src/constants/formats";
 
-import { TranslateService } from "@ngx-translate/core";
-
-import * as Rx from "rxjs";
 import * as moment from "moment";
-import * as lodash from "lodash";
 
 @Component({
     selector: "AddForm",
     moduleId: module.id,
     templateUrl: "./add-form.component.html"
 })
-export class AddFormComponent implements OnInit {
+export class AddFormComponent {
     @ViewChild("autocomplete") autocomplete: ElementRef;
 
     ccRecordForm: FormGroup = new FormGroup({
@@ -50,10 +47,6 @@ export class AddFormComponent implements OnInit {
         this.ccRecordForm.controls.checked.valueChanges.subscribe(value => this.checkedText = value ? "Yes" : "No");
     }
 
-    ngOnInit() {
-        // setTimeout(() => this.titleField.setFocus(), 500);
-    }
-
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
@@ -66,7 +59,7 @@ export class AddFormComponent implements OnInit {
 
     private updateTitles() {
         this.titles = new ObservableArray<TokenModel>();
-        this.db.getSeries().subscribe(titles => this.titles.push(...titles.map(t => new TokenModel(t.name, undefined))));
+        this.db.db.getSeries().subscribe(titles => this.titles.push(...titles.map(t => new TokenModel(t.name, undefined))));
     }
 
     get dataTitles(): ObservableArray<TokenModel> {
