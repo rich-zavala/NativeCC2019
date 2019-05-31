@@ -159,7 +159,7 @@ export class SQLiteHandler implements ICCDBHandler {
                     let returnObs: Rx.Observable<any>;
                     if (yearData) {
                         yearData.days.push(day);
-                        yearData.days = lodash.uniq(yearData.days);
+                        yearData.days = lodash.uniq(yearData.days).sort().reverse();
                         yearData.total += cc.price;
                         returnObs = Rx.from(this.db.execSQL(`UPDATE years SET value=? WHERE year=?`, [JSON.stringify(yearData), yearData.year]));
                     } else {
@@ -241,7 +241,7 @@ export class SQLiteHandler implements ICCDBHandler {
 
     getYears(): Rx.Observable<ICCYear[]> {
         return new Rx.Observable(observer =>
-            Rx.from(this.db.all("SELECT * FROM years ORDER BY year DESC"))
+            Rx.from(this.db.all("SELECT value FROM years ORDER BY year DESC"))
                 .subscribe(
                     (yearsDbData: any[]) => {
                         if (yearsDbData) {
@@ -257,8 +257,8 @@ export class SQLiteHandler implements ICCDBHandler {
     }
 
     getYearDays(year: number): Rx.Observable<ICCDay[]> {
-        console.log(">>>>> getYearDays");
-        return Rx.from(this.db.all());
+        return Rx.from(this.db.all("SELECT value FROM days WHERE year=? ORDER BY date DESC", [year]))
+            .pipe(map((data: any[]) => data.map(d => JSON.parse(d.value))));
     }
 
     getSeries(): Rx.Observable<ICCSerie[]> {
@@ -279,8 +279,8 @@ export class SQLiteHandler implements ICCDBHandler {
     }
 
     getRecordsByDay(day: string): Rx.Observable<CCRecord[]> {
-        console.log(">>>>> getRecordsByDay");
-        return Rx.from(this.db.all());
+        return Rx.from(this.db.all("SELECT value FROM records WHERE publishDate=?", [day]))
+            .pipe(map((data: any[]) => data.map(d => new CCRecord(JSON.parse(d.value)))));
     }
 
     delete(cc: CCRecord): Rx.Observable<IDeleteRecordResponse> {

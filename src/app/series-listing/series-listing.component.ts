@@ -23,7 +23,7 @@ interface IListState {
 @Component({
   selector: "SeriesListing",
   templateUrl: "./series-listing.component.html",
-  styleUrls: ["./series-listing.page.scss"]
+  styleUrls: ["./series-listing.component.scss"]
 })
 export class SeriesListingComponent implements OnInit {
   private static singleton: SeriesListingComponent;

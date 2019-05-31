@@ -1,0 +1,50 @@
+<DockLayout backgroundColor="lightgray" stretchLastChild="false">
+  <!-- <Label text="left" dock="left" width="60" backgroundColor="red"/> -->
+  <!-- <Label text="top" dock="top" height="60" backgroundColor="green"/>
+    <Label text="right" dock="right" width="60" backgroundColor="blue"/>
+    <Label text="bottom" dock="bottom" height="60" backgroundColor="yellow"/> -->
+  <DockLayout dock="top">
+    <DockLayout dock="left">
+      <Label dock="left" [text]="dayStr"></Label>
+      <Label dock="right" [text]="monthStr"></Label>
+    </DockLayout>
+    <DockLayout dock="right">
+      <Label dock="left" [text]="recordsCount + ' comics'"></Label>
+      <Label dock="right" [text]="totalStr"></Label>
+    </DockLayout>
+  </DockLayout>
+  <StackLayout dock="bottom">
+    <app-record-row *ngFor="let cc of records; let odd = odd;" [cc]="cc" [odd]="odd" [ngClass]="{ hidden: (filterValue === 1 && !cc.checked) || (filterValue === 2 && cc.checked) }"></app-record-row>
+    <!-- <Label *ngFor="let cc of records; let odd = odd;" [text]="cc.id"></Label> -->
+  </StackLayout>
+</DockLayout>
+
+<!-- <Label [text]="dayStr"></Label> -->
+
+<!-- </ScrollView> -->
+<!-- </DockLayout> -->
+
+<!-- <div class="date-container flex fcol" [ngClass]="{ hidden: !displayDate }">
+  <div class="date-display flex">
+    <div class="col-1 flex fcol fcenter">
+      <div class="day">{{dayStr}}</div>
+      <div class="month capital">{{monthStr}}</div>
+      <div class="width-holder"></div>
+    </div>
+    <div class="col-2 flex fcol fcenter">
+      <div class="counter">{{recordsCount}} comics</div>
+      <div class="total">{{totalStr}}</div>
+    </div>
+  </div>
+  <div class="date-records flex">
+    <div class="col-1 flex fcenter">
+      <div class="width-holder"></div>
+    </div>
+    <div class="col-2">
+      <ion-card color="dark">
+        <app-record-row *ngFor="let cc of records; let odd = odd;" [cc]="cc" [odd]="odd" [ngClass]="{ hidden: (filterValue === 1 && !cc.checked) || (filterValue === 2 && cc.checked) }">
+        </app-record-row>
+      </ion-card>
+    </div>
+  </div>
+</div> -->

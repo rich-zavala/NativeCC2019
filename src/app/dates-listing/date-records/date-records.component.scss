@@ -1,0 +1,76 @@
+$marginBetweenDates: 2vh;
+$col1Width: 5.2vh;
+
+
+
+/*.date-container {
+    padding: 0 .5vw;
+    margin-bottom: $marginBetweenDates;
+    margin-right: 10px;
+
+    .col-1 .width-holder {
+        width: $col1Width;
+    }
+
+    .col-2 {
+        flex: 1;
+    }
+
+    .date-display {
+        color: var(--ion-color-light);
+
+        .col-1 {
+            width: $col1Width;
+            height: $col1Width;
+            background: var(--ion-color-tertiary-shade);
+            border: 2px solid var(--ion-color-tertiary);
+            border-radius: 100%;
+            text-align: center;
+            line-height: 1;
+
+            .day {
+                font-size: .8rem;
+                font-weight: bold;
+            }
+
+            .month {
+                font-size: .6rem;
+            }
+        }
+
+        .col-2 {
+            align-items: flex-end;
+            font-size: .7rem;
+
+            .counter {
+                font-weight: bold;
+            }
+        }
+    }
+
+    .date-records {
+        .col-1 {
+            &::before {
+                height: calc(100% + #{$marginBetweenDates});
+                width: 2px;
+                display: block;
+                position: absolute;
+                background: var(--ion-color-tertiary);
+                content: '';
+            }
+        }
+
+        .col-2 {
+            ion-card {
+                margin: 0;
+
+                &::before {
+                    height: 4px;
+                    display: flex;
+                    background: var(--ion-color-medium);
+                    content: '';
+                }
+            }
+        }
+    }
+}*/

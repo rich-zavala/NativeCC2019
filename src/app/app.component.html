@@ -18,6 +18,11 @@ https://docs.nativescript.org/angular/ui/professional-ui-components/ng-SideDrawe
                     <Label col="1" text="Home" class="p-r-10"></Label>
                 </GridLayout>
 
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/datesListing')" (tap)="onNavItemTap('/datesListing')">
+                    <Label col="0" text="&#xf015;" class="fa"></Label>
+                    <Label col="1" text="Dates Listing" class="p-r-10"></Label>
+                </GridLayout>
+
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/seriesListing')" (tap)="onNavItemTap('/seriesListing')">
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Series Listing" class="p-r-10"></Label>
