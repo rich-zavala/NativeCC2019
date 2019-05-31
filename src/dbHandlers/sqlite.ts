@@ -263,7 +263,7 @@ export class SQLiteHandler implements ICCDBHandler {
 
     getSeries(): Rx.Observable<ICCSerie[]> {
         return new Rx.Observable(observer =>
-            Rx.from(this.db.all("SELECT * FROM series ORDER BY name"))
+            Rx.from(this.db.all("SELECT value FROM series ORDER BY name"))
                 .subscribe(
                     (seriesDbData: any[]) => {
                         if (seriesDbData) {

@@ -16,8 +16,8 @@ import * as moment from "moment";
     templateUrl: "app.component.html"
 })
 export class AppComponent implements OnInit {
-    private _activatedUrl: string;
-    private _sideDrawerTransition: DrawerTransitionBase;
+    private activatedUrl: string;
+    private sideDrawerTransitionBase: DrawerTransitionBase;
 
     constructor(
         private router: Router,
@@ -27,20 +27,20 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this._activatedUrl = "/home";
-        this._sideDrawerTransition = new SlideInOnTopTransition();
+        this.activatedUrl = "/home";
+        this.sideDrawerTransitionBase = new SlideInOnTopTransition();
 
         this.router.events
             .pipe(filter((event: any) => event instanceof NavigationEnd))
-            .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
+            .subscribe((event: NavigationEnd) => this.activatedUrl = event.urlAfterRedirects);
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
+        return this.sideDrawerTransitionBase;
     }
 
     isComponentSelected(url: string): boolean {
-        return this._activatedUrl === url;
+        return this.activatedUrl === url;
     }
 
     onNavItemTap(navItemRoute: string): void {

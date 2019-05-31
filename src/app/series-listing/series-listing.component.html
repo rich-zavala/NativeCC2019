@@ -16,13 +16,13 @@
     <ScrollView dock="bottom" (touch)="unfocusSearch()">
       <GridLayout [rows]="filteredRows">
         <ng-container *ngFor="let serie of seriesFiltered; let i = index">
-          <StackLayout [row]="i" class="m-t-5 p-l-10 p-r-10">
-            <DockLayout class="serie" [ngClass]="{ expanded: states[serie.name].expanded }" (tap)="expandToggle(serie)">
+          <StackLayout [row]="i" class="serie m-t-5 p-l-10 p-r-10" [ngClass]="{ expanded: states[serie.name].expanded }">
+            <DockLayout class="serieTitle" (tap)="expandToggle(serie)">
               <Label [text]="serie.name" class="m-r-10" dock="left" width="80%" height="100%" verticalAlignment="center" textWrap="true"></Label>
               <Label [text]="serie.records.length + ' records'" class="serie-detail text-right font-weight-bold" dock="top"></Label>
               <Label [text]="dynCurrency(serie.total)" class="serie-detail text-right" dock="bottom"></Label>
             </DockLayout>
-            <StackLayout *ngIf="states[serie.name].expanded" class="m-b-5 p-t-5">
+            <StackLayout class="serieRows m-b-5 p-t-5">
               <app-record-row *ngFor="let cc of states[serie.name].records; let index = index; let odd = odd;" [cc]="cc" [odd]="odd"></app-record-row>
             </StackLayout>
             <StackLayout class="hr-light m-t-5"></StackLayout>

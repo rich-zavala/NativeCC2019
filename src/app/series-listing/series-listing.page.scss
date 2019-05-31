@@ -3,10 +3,18 @@
 }
 
 .serie {
-    transition: all .3s;
-
     &.expanded {
-        color: black;
+        .serieTitle {
+            color: black;
+        }
+
+        .serieRows {
+            visibility: visible;
+        }
+    }
+
+    .serieRows {
+        visibility: collapsed;
     }
 }
 

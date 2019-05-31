@@ -1,3 +1,4 @@
+// tslint:disable: no-unused-expression
 import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
@@ -25,21 +26,29 @@ interface IListState {
   styleUrls: ["./series-listing.page.scss"]
 })
 export class SeriesListingComponent implements OnInit {
-  working = true;
+  private static singleton: SeriesListingComponent;
+
   series: ICCSerie[] = [];
   seriesFiltered: ICCSerie[] = [];
   states: { [key: string]: IListState } = {};
 
   searching = false;
   showEmpty = false;
-  filterEmpty = false;
+
   filterValue = "";
+  filteredRows = "";
+  filteredKeys: string;
 
   constructor(
     private db: CollectionService,
     private page: Page,
     private routerExtensions: RouterExtensions
-  ) { }
+  ) {
+    if (SeriesListingComponent.singleton) {
+      return SeriesListingComponent.singleton;
+    }
+    SeriesListingComponent.singleton = this;
+  }
 
   ngOnInit() {
     this.db.series$.subscribe(d => {
@@ -72,11 +81,11 @@ export class SeriesListingComponent implements OnInit {
 
       if (deleteInfo.serieDeleted) {
         this.series = this.series.filter(s => s.name !== deleteInfo.record.title);
-        this.filter();
+        // this.filter();
+        this.db.updateSeries();
       }
 
       this.showEmpty = this.series.length === 0;
-      this.db.updateSeries();
     });
 
     this.db.updateSeries();
@@ -96,15 +105,33 @@ export class SeriesListingComponent implements OnInit {
   }
 
   private filter() {
+    let seriesFiltered: ICCSerie[];
+
+    const getFilteredKeys = (): string => seriesFiltered.map(s => s.name).join();
+
+    const setFilterValues = (filteredKeys: string) => {
+      this.filteredKeys = filteredKeys;
+      this.seriesFiltered = seriesFiltered;
+      this.filteredRows = "auto ".repeat(seriesFiltered.length + 1);
+      console.log("Filtered!");
+    };
+
     if (this.filterValue === "") {
-      this.seriesFiltered = this.series;
-      this.filterEmpty = false;
+      seriesFiltered = this.series;
     } else {
-      this.seriesFiltered = this.series.filter(s => s.name.toLocaleLowerCase().includes(this.filterValue));
-      this.filterEmpty = this.seriesFiltered.length === 0;
+      seriesFiltered = this.series.filter(s => s.name.toLocaleLowerCase().includes(this.filterValue));
     }
 
-    this.working = false;
+    if (!this.filteredKeys) {
+      setFilterValues(getFilteredKeys());
+    } else {
+      const filteredKeys = getFilteredKeys();
+      if (filteredKeys !== this.filteredKeys) {
+        setFilterValues(filteredKeys);
+      } else {
+        console.log(">>>> No need to update");
+      }
+    }
   }
 
   private filterBar(args) {
@@ -123,7 +150,7 @@ export class SeriesListingComponent implements OnInit {
   private unfocusSearch() {
     if (this.searching) {
       const searchbar: SearchBar = this.page.getViewById("searchbar");
-      searchbar.dismissSoftInput();
+      searchbar && searchbar.dismissSoftInput();
     }
   }
 
@@ -153,11 +180,5 @@ export class SeriesListingComponent implements OnInit {
 
   private openAddForm() {
     this.routerExtensions.navigate(["addForm"]);
-  }
-
-  // Rows contructors
-  // TODO: THIS MUST BE OPTIMIZED!!!
-  get filteredRows() {
-    return [...this.seriesFiltered, null].map(s => "auto").join(" ");
   }
 }
